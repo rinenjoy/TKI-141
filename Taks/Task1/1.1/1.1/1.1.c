@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 /*
-@brief формула для получения переменной а
+*@brief формула для получения переменной а
 */
 void get_a(float x, float y, float z)
 {
@@ -9,7 +9,7 @@ void get_a(float x, float y, float z)
 	printf("a = %f\n", a);
 }
 /*
-@brief формула для получения переменной b
+*@brief формула для получения переменной b
 */
 void get_b(float x, float y, float z)
 {
@@ -17,7 +17,7 @@ void get_b(float x, float y, float z)
 	printf("b = %f\n", b);
 }
 /*
-@param числовые значения для x,y,z
+*@param числовые значения для x,y,z
 */
 int main()
 {
