@@ -44,7 +44,7 @@ int main()
 	double a = get_x(x_a, x_b);
 	double b = get_y(y_a, y_b);
 	double res = distance(a,b);
-	printf_s("%lf", res);
+	printf_s("Растояние = %lf", res);
 	return 0;
 }
 
