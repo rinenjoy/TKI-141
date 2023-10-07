@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="2.6.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="scanf.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

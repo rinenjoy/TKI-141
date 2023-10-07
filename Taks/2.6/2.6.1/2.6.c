@@ -1,50 +1,78 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 /**
-* @brief это координаты точки а
-* @return возвращает координату x и координату y
+* @brief СЌС‚Рѕ РєРѕРѕСЂРґРёРЅР°С‚С‹ x РґРІСѓС… С‚РѕС‡РµРє
+* @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ x_a Рё РєРѕРѕСЂРґРёРЅР°С‚Сѓ x_b
 */
-double give_a(double x_a, double y_a);
+double get_x(double x_a, double x_b);
 
 /**
-* @brief это координаты точки b
-* @return возвращает координату x и координату y
+* @brief @brief СЌС‚Рѕ РєРѕРѕСЂРґРёРЅР°С‚С‹ y РґРІСѓС… С‚РѕС‡РµРє
+* @return РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚Сѓ y_a Рё РєРѕРѕСЂРґРёРЅР°С‚Сѓ y_b
 */
-double give_b(double x_b, double y_b);
+double get_y(double y_a, double y_b);
 
 /**
-*@brief является очкой входа в программу
-*@return возвращает 0, если программа работает верно
+*@brief СЂР°СЃС‡РёС‚С‹РІР°РµС‚ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ РґРІСѓРјСЏ Р·Р°РґР°РЅРЅС‹РјРё С‚РѕС‡РєР°РјРё
+*@return РІРѕР·РІСЂР°С‰Р°РµС‚ РґР»РёРЅСѓ СЂР°СЃСЃС‚РѕСЏРЅРёСЏ РјРµР¶РґСѓ РґРІСѓРјСЏ С‚РѕС‡РєР°РјРё
 */
-int main() 
+double distance(double dx, double dy);
+
+/**
+*@brief РїСЂРѕРІРµСЂСЏРµС‚ РЅР° РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РІРІРѕРґ 
+*/
+void get(double *value);
+
+
+/**
+*@brief СЏРІР»СЏРµС‚СЃСЏ С‚РѕС‡РєРѕР№ РІС…РѕРґР° РІ РїСЂРѕРіСЂР°РјРјСѓ
+*@return РІРѕР·РІСЂР°С‰Р°РµС‚ 0, РІ СЃР»СѓС‡Р°Рµ СѓСЃРїРµС…Р°
+*/
+int main()
 {
-
+	double x_a, x_b, y_a, y_b;
+	puts("Р’РІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚Сѓ x С‚РѕС‡РєРё a: ");
+	get(&x_a);
+	puts("Р’РІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚Сѓ y С‚РѕС‡РєРё a: ");
+	get(&y_a);
+	puts("Р’РІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚Сѓ x С‚РѕС‡РєРё b: ");
+	get(&x_b);
+	puts("Р’РІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚Сѓ y С‚РѕС‡РєРё b: ");
+	get(&y_b);
+	double a = get_x(x_a, x_b);
+	double b = get_y(y_a, y_b);
+	double res = distance(a,b);
+	printf_s("%lf", res);
 	return 0;
 }
 
-double get()
+void get(double *value)
 {
-	double get = scanf();
-	if (get != 1)
-		return get;
-	else
+	int result;
+	result = scanf_s("%lf", value);
+	if (result != 1)
+	{
 		puts("error");
-}
-double get_a(double x_a, double y_a)
-{
-	printf_s("Введите координату х точки а = ");
-	scanf("%lf", &x_a);
-	printf_s("Введите координату у точки а = ");
-	scanf("%lf", &y_a);
+		abort();
+	}
 }
 
-double get_b(double x_b, double y_b)
+double get_x(double x_a, double x_b)
 {
-	printf_s("Введите координату х точки b = ");
-	scanf("%lf", &x_b);
-	printf_s("Введите координату у точки b = ");
-	scanf("%lf", &y_b);
+	double dx = x_b - x_a;
+	return (dx);
 }
 
-double 
+double get_y(double y_a, double y_b)
+{
+	double dy = y_b - y_a;
+	return (dy);
+}
+
+double distance(double dx, double dy)
+{
+	double AB = sqrt(pow(dx,2) + pow(dy,2));
+	return AB;
+}
