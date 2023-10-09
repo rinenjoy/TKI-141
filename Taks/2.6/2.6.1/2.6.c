@@ -3,27 +3,23 @@
 #include <stdlib.h>
 
 /**
-* @brief это координаты x двух точек
-* @return возвращает координату x_a и координату x_b
+* @brief Функция получает одну из координат двух точек
+* @return возвращает разницу между координатами
 */
-double get_x(double x_a, double x_b);
+double get_get(double xy_a, double xy_b);
 
-/**
-* @brief @brief это координаты y двух точек
-* @return возвращает координату y_a и координату y_b
-*/
-double get_y(double y_a, double y_b);
 
 /**
 *@brief расчитывает расстояние между двумя заданными точками
-*@return возвращает длину расстояния между двумя точками
+*@param функция ожидает два значения, полученные в результате работы функций get_x и get_y 
+*@return возвращает длину расстояния между двух точек
 */
 double distance(double dx, double dy);
 
 /**
 *@brief проверяет на правильность пользовательский ввод 
 */
-void get(double *value);
+double get(double *value);
 
 
 /**
@@ -41,14 +37,14 @@ int main()
 	get(&x_b);
 	puts("Введите координату y точки b: ");
 	get(&y_b);
-	double a = get_x(x_a, x_b);
-	double b = get_y(y_a, y_b);
+	double a = get_get(x_a, x_b);
+	double b = get_get(y_a, y_b);
 	double res = distance(a,b);
-	printf_s("Растояние = %lf", res);
+	printf_s("Растояние = %.2lf", res);
 	return 0;
 }
 
-void get(double *value)
+double get(double *value)
 {
 	int result;
 	result = scanf_s("%lf", value);
@@ -59,17 +55,12 @@ void get(double *value)
 	}
 }
 
-double get_x(double x_a, double x_b)
+double get_get(double xy_a, double xy_b)
 {
-	double dx = x_b - x_a;
-	return (dx);
+	double dxy = xy_b - xy_a;
+	return (dxy);
 }
 
-double get_y(double y_a, double y_b)
-{
-	double dy = y_b - y_a;
-	return (dy);
-}
 
 double distance(double dx, double dy)
 {
