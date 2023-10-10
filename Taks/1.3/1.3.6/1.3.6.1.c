@@ -3,25 +3,24 @@
 #include <math.h>
 
 /*
-* @brief Функция проверяет пользовательский ввод
+* @brief Функция получет пользовательское значение
 */
-double get();
+double get_value();
 
 /*
-* @brief Функция вычисляет силу F
+* @brief Функция вычисляет силу force
 * @param m - масса бетонной плиты [кг]
-* @param g - ускорение свободного падения, константа равная 9,81 [м/с₂]
-* @return сила F [Н]
+* @return сила force [Н]
 */
-double get_F(double m);
+double get_force(double m);
 
 /*
 * @brief Функция вычисляет давление, производимое бетонной плитой
-* @param F - сила давления бетонной плиты
-* @param S - площадь опоры
-* @return давление P [Па]
+* @param force - сила давления бетонной плиты
+* @param square - площадь опоры
+* @return давление pressure [Па]
 */
-double get_P(double F, double S);
+double get_pressure(double force, double square);
 
 /*
 * @brief является точкой входа в программу
@@ -29,16 +28,16 @@ double get_P(double F, double S);
 */
 int main() {
 	puts("Введите массу (m) бетонной плиты [кг]: ");
-	double m = get();
-	double F = get_F(m);
+	double m = get_value();
+	double force = get_force(m);
 	puts("Введите площадь опоры [кв.м] : ");
-	double S = get();
-	double P = get_P(F, S);
-	printf_s("Давление, производимое бетонной плитой = %.2lf [Па]", P);
+	double square = get_value();
+	double pressure = get_pressure(force, square);
+	printf_s("Давление, производимое бетонной плитой = %.2lf [Па]", pressure);
 	return 0;
 }
 
-double get()
+double get_value()
 {
 	double value;
 	double res = scanf_s("%lf", &value);
@@ -51,15 +50,15 @@ double get()
 
 }
 
-double get_F(double m)
+double get_force(double m)
 {
 	const double g = 9.81;
-	double F = m * g;
-	return (F);
+	double force = m * g;
+	return (force);
 }
 
-double get_P(double F, double S)
+double get_pressure(double force, double square)
 {
-	double P = F / S;
-	return (P);
+	double pressure = force / square;
+	return (pressure);
 }
