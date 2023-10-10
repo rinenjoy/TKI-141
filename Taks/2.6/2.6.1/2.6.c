@@ -6,7 +6,7 @@
 * @brief Функция получает одну из координат двух точек
 * @return возвращает разницу между координатами
 */
-double get_get(double xy_a, double xy_b);
+double get_difference(double xy_a, double xy_b);
 
 
 /**
@@ -19,7 +19,7 @@ double distance(double dx, double dy);
 /**
 *@brief проверяет на правильность пользовательский ввод 
 */
-double get(double *value);
+double get();
 
 
 /**
@@ -37,33 +37,32 @@ int main()
 	get(&x_b);
 	puts("Введите координату y точки b: ");
 	get(&y_b);
-	double a = get_get(x_a, x_b);
-	double b = get_get(y_a, y_b);
+	double a = get_difference(x_a, x_b);
+	double b = get_difference(y_a, y_b);
 	double res = distance(a,b);
 	printf_s("Растояние = %.2lf", res);
 	return 0;
 }
 
-double get(double *value)
+double get()
 {
 	int result;
-	result = scanf_s("%lf", value);
+	result = scanf_s("%lf", &value);
 	if (result != 1)
 	{
 		puts("error");
 		abort();
 	}
+	return value;
 }
 
-double get_get(double xy_a, double xy_b)
+double get_difference(double xy_a, double xy_b)
 {
-	double dxy = xy_b - xy_a;
-	return (dxy);
+	return xy_b - xy_a;
 }
 
 
 double distance(double dx, double dy)
 {
-	double AB = sqrt(pow(dx,2) + pow(dy,2));
-	return AB;
+	return sqrt(pow(dx, 2) + pow(dy, 2));
 }
