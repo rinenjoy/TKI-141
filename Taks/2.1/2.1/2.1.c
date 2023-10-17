@@ -27,7 +27,7 @@ int getValue();
 * @param Switch1 действие 1) обмен переменных с помощью 3 переменной
 * @param Switch2 действие 2) обмен переменных без помощи 3 переменной
 */
-enum Action{Switch1=1, Switch2};
+enum Action{Switch1, Switch2};
 
 /*
 * @brief является точкой входа в программу
@@ -37,9 +37,9 @@ int main() {
 	int a = getValue();
 	int b = getValue();
 	printf_s("Изначальные значения: a = %d, b = %d\n", a, b);
-
-	printf_s("1) Обмен переменных при помощи 3 переменной\n2) Обмен переменных без помощи 3 переменной\n");
+	printf_s("%d - Обмен переменных при помощи 3 переменной\n%d - Обмен переменных без помощи 3 переменной\n", Switch1, Switch2);
 	int choice;
+	printf_s("Выберите действие: ");
 	scanf_s("%d", &choice);
 	enum Action action = (enum Action)choice;
 	switch (action)
@@ -69,6 +69,7 @@ int getValue() {
 	if (res != 1)
 	{
 		errno = EIO;
+		perror("ERROR");
 	    abort();
 	}
 	return value;
