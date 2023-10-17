@@ -42,14 +42,15 @@ double getValue(){
 	return value;
 }
 
-double function(double x) {
+double function(double x) 
+{
 	const double a = 2.5;
 	double y;
-	if (x - a > DBL_MIN) 
+	if (abs(x - a) > DBL_MIN) 
 	{
 		y = x * pow(sin(x),2);
 	}
-	else if (x - a <= DBL_MIN)
+	else
 	{
 		y = x * pow(cos(x),2);
 	}
