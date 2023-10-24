@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <errno.h>
 #include <stdbool.h>
@@ -12,16 +13,35 @@
 double getValue();
 
 /*
-* @brief Функция определяет лежат ли 3 точки на одной линии
+* @brief функция считает скалярное произведение одной из координат
+* @param x1 координата х первой точки
+* @param x2 координата х второй точки
+* @param x3 координата x третей точки
+* @return значение, равное скалярному произведению координат векторов
+*/
+double scalr(double xy1, double xy2, double xy3);
+
+/*
+* @brief функция считает модуль вектора
+* @param x1 координата х первой точки
+* @param x2 координата х второй точки
+* @param y1 координата у первой точки
+* @param y2 координата у второй точки
+* @return значение, равное модулю вектора
+*/
+double distance(double x1, double x2, double y1, double y2);
+
+/*
+* @brief Функция считает значение угла между векторами, составленными из точек
 * @param x1 координата х первой точки
 * @param x2 координата х второй точки
 * @param x3 координата х третей точки
 * @param y1 координата у первой точки
 * @param y2 координата у второй точки
 * @param y3 координата у третей точки
-* @return если точки лежат на одной прямой, то возвращает true, в противном случае возвращает величину угла В
+* @return величинa угла В
 */
-bool isParallel_1(double x1, double x2, double x3, double y1, double y2, double y3);
+double corner(double x1, double x2, double x3, double y1, double y2, double y3);
 
 /*
 * @brief Функция определяет лежат ли 3 точки на одной линии
@@ -31,10 +51,15 @@ bool isParallel_1(double x1, double x2, double x3, double y1, double y2, double 
 * @param y1 координата у первой точки
 * @param y2 координата у второй точки
 * @param y3 координата у третей точки
-* @return если точки лежат на одной прямой, то возвращает true, в противном случае возвращает величину угла В
+* @return если точки лежат на одной прямой, то пишет ответ и завершает программу, в противном случае обращается к функции lieOnSameLine2
 */
-bool isParallel_2(double x1, double x2, double x3, double y1, double y2, double y3);
+double lieOnSameLine(double x1, double x2, double x3, double y1, double y2, double y3);
 
+/*
+* @brief структура данных, позволяющая обозначить сразу две координаты точки
+* @param x - координата x
+* @param y - координата y
+*/
 struct point {
 	double x;
 	double y;
@@ -60,7 +85,8 @@ int main() {
 	C.x = getValue();
 	printf_s("Введите значение y точки C\n");
 	C.y = getValue();
-	isParallel_2(A.x, B.x, C.x, A.y, B.y, C.y);
+	lieOnSameLine(A.x, B.x, C.x, A.y, B.y, C.y);
+	EXIT_SUCCESS;
 	return 0;
 }
 
@@ -76,14 +102,14 @@ double getValue() {
 	return value;
 }
 
-bool isParallel_1(double x1, double x2, double x3, double y1, double y2, double y3) {
-	double scalr_x = (x2 - x1) * (x3 - x1);
-	double scalr_y = (y2 - y1) * (y3 - y1);
-	double distance_AB = sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
-	double distance_AC = sqrt(pow((x3 - x1), 2) + pow((y3 - y1), 2));
+double corner(double x1, double x2, double x3, double y1, double y2, double y3) {
+	double scalrx = scalr(x1,x2,x3);
+	double scalry = scalr(y1, y2, y3);
+	double distanceAB = distance(x1, x2, y1, y2);
+	double distanceAC = distance(x2, x3, y2, y3);
 	double B; 
-	if (distance_AB != 0 || distance_AC != 0) { 
-		B = acos((scalr_x + scalr_y) / (distance_AB * distance_AC));
+	if (distanceAB >= DBL_MIN || distanceAC >= DBL_MIN) { 
+		B = acos((scalrx + scalry) / (distanceAB * distanceAC));
 	}
 	else
 	{
@@ -91,18 +117,26 @@ bool isParallel_1(double x1, double x2, double x3, double y1, double y2, double 
 		perror("ERROR");
 		abort();
 	}
-	double const pi = 3.1415;
-	B = B * 180 / pi;
-	printf_s("Точки не лежат на одной прямой\nУгол В = %.2lf\n", B);
+	B = B * 180 / M_PI; //пеевод из радиан в градусы
 	return B;
 }
 
-bool isParallel_2(double x1, double x2, double x3, double y1, double y2, double y3) {
-	if (sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2)) + sqrt(pow((x3 - x2), 2) + pow((y3 - y2), 2)) == sqrt(pow((x3 - x1), 2) + pow((y3 - y1), 2))){
+double lieOnSameLine(double x1, double x2, double x3, double y1, double y2, double y3) {
+	if (distance(x1,x2,y1,y2) + distance(x2, x3, y2, y3) == distance(x1, x3, y1, y3)) {
 		printf_s("Точки лежат на одной прямой");
-		return true;
+		return 0.0;
 	}
 	else {
-		isParallel_1(x1, x2, x3, y1, y2, y3);
+		double B = corner(x1, x2, x3, y1, y2, y3);
+		printf_s("Точки не лежат на одной прямой\nУгол В = %.2lf\n", B);
+		return B;
 	}
+}
+
+double scalr(double xy1, double xy2, double xy3) {
+	return (xy2 - xy1) * (xy3 - xy1);
+}
+
+double distance(double x1, double x2, double y1, double y2) {
+	return sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
 }
