@@ -1,0 +1,13 @@
+﻿"2.3.exe" (Win32). Загружено "C:\Институт\TKI-141\Taks\2.3\2.3\Debug\2.3.exe". Символы загружены.
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\ntdll.dll". 
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\kernel32.dll". 
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\KernelBase.dll". 
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\vcruntime140d.dll". 
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\ucrtbased.dll". 
+Поток 0x1fe0 завершился с кодом 0 (0x0).
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\kernel.appcore.dll". 
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\msvcrt.dll". 
+"2.3.exe" (Win32). Загружено "C:\Windows\SysWOW64\rpcrt4.dll". 
+Поток 0x6e0 завершился с кодом 0 (0x0).
+Поток 0x12fc завершился с кодом 0 (0x0).
+Программа "[4540] 2.3.exe" завершилась с кодом 0 (0x0).
