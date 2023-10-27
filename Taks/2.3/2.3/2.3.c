@@ -1,6 +1,6 @@
+#define _USE_MATH_DEFINES
 #include <stdio.h>
 #include <stdlib.h>
-#define _USE_MATH_DEFINES
 #include <math.h>
 #include <errno.h>
 #include <stdbool.h>
@@ -20,7 +20,7 @@ double getValue();
 * @param Cy координата у третей точки
 * @return величинa угла В
 */
-double corner(x1, y1, x3, y3);
+double corner(double x1,double  y1,double x3,double y3);
 
 /*
 * @brief Функция определяет лежат ли 3 точки на одной линии
@@ -32,7 +32,7 @@ double corner(x1, y1, x3, y3);
 * @param Cy координата у третей точки
 * @return если точки лежат на одной прямой, то пишет ответ и завершает программу, в противном случае обращается к функции corner
 */
-double lieOnSameLine(x1, y1, x2, y2, x3, y3);
+double lieOnSameLine(double x1, double y1, double x2, double y2, double x3, double y3);
 
 /* 
 * @brief является точкой входа в программу
@@ -67,14 +67,14 @@ double getValue() {
 	return value;
 }
 
-double corner(x1, y1, x3, y3) {
+double corner(double x1,double y1,double x3,double y3) {
 	double B = atan((double)(y3 - y1)/(x3 - x1));
 	B = B * (180.0 / M_PI); //пеевод из радиан в градусы
 	printf_s("Угол В = %.2lf\n", B);
 	return B;
 }
 
-double lieOnSameLine(x1, y1, x2, y2, x3, y3) {
+double lieOnSameLine(double x1, double y1, double x2, double y2, double x3, double y3) {
 	double k = (double)(y1 - y2) / (x1 - x2);
 	double b = y1 - k * x1;
 	if (y3 - k * x3 - b <= DBL_MIN)
