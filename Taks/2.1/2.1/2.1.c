@@ -27,7 +27,7 @@ int getValue();
 * @param Switch1 действие 1) обмен переменных с помощью 3 переменной
 * @param Switch2 действие 2) обмен переменных без помощи 3 переменной
 */
-enum Action{Switch1, Switch2};
+enum Action{Switch1=1, Switch2};
 
 /*
 * @brief является точкой входа в программу
@@ -41,17 +41,25 @@ int main() {
 	int choice;
 	printf_s("Выберите действие: ");
 	scanf_s("%d", &choice);
-	enum Action action = (enum Action)choice;
-	switch (action)
+	if (choice == Switch1 || choice == Switch2)
 	{
-	case Switch1:
-		swap_1(&a, &b);
-		printf_s("swap_1  a = %d, b = %d\n", a, b);
-		break;
-	case Switch2:
-		swap_2(&a, &b);
-		printf_s("swap_2  a = %d, b = %d\n", a, b);
-		break;
+		enum Action action = (enum Action)choice;
+		switch (action)
+		{
+		case Switch1:
+			swap_1(&a, &b);
+			printf_s("swap_1  a = %d, b = %d\n", a, b);
+			break;
+		case Switch2:
+			swap_2(&a, &b);
+			printf_s("swap_2  a = %d, b = %d\n", a, b);
+			break;
+		}
+	}
+	else
+	{
+		printf_s("Вы ввели непраивльное значение");
+		abort();
 	}
 	return 0;
 }
