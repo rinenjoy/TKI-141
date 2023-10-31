@@ -7,20 +7,20 @@
 * @param i - первая переменная
 * @param j - вторая переменная
 */
-void swap_1(int* i, int* j);
+void swap_1(double* i, double* j);
 
 /*
 * @brief Функция меняет между собой значения двух переменных
 * @param x - первая переменная
 * @param y - вторая переменная
 */
-void swap_2(int* x, int* y);
+void swap_2(double* x, double* y);
 
 /*
 * @brief проверяет пользовательский ввод
 * @return введеное значение
 */
-int getValue();
+double getValue();
 
 /*
 * @brief Пользовательский ввод
@@ -34,13 +34,14 @@ enum Action{Switch1=1, Switch2};
 * @return 0, в случае успеха
 */
 int main() {
-	int a = getValue();
-	int b = getValue();
-	printf_s("Изначальные значения: a = %d, b = %d\n", a, b);
+	printf_s("Введите переменную 1\n");
+	double a = getValue();
+	printf_s("Введите переменную 2\n");
+	double b = getValue();
+	printf_s("Изначальные значения: a = %lf, b = %lf\n", a, b);
 	printf_s("%d - Обмен переменных при помощи 3 переменной\n%d - Обмен переменных без помощи 3 переменной\n", Switch1, Switch2);
-	int choice;
 	printf_s("Выберите действие: ");
-	scanf_s("%d", &choice);
+	int choice = getValue();
 	if (choice == Switch1 || choice == Switch2)
 	{
 		enum Action action = (enum Action)choice;
@@ -48,42 +49,41 @@ int main() {
 		{
 		case Switch1:
 			swap_1(&a, &b);
-			printf_s("swap_1  a = %d, b = %d\n", a, b);
+			printf_s("swap_1  a = %.1lf, b = %.1lf\n", a, b);
 			break;
 		case Switch2:
 			swap_2(&a, &b);
-			printf_s("swap_2  a = %d, b = %d\n", a, b);
+			printf_s("swap_2  a = %.1lf, b = %.1lf\n", a, b);
+			break;
+		default:
+			printf_s("Вы ввели непраивльное значение");
+			return 1;
 			break;
 		}
-	}
-	else
-	{
-		printf_s("Вы ввели непраивльное значение");
-		abort();
 	}
 	return 0;
 }
 
-void swap_1(int* i, int* j) {
-	int temp = *i;
+double getValue() 
+{ 
+	double value;
+	int res = scanf_s("%lf", &value);
+	if (res != 1)
+	{ 
+		errno = EIO;
+		perror("ERROR");
+		abort();
+	}
+	return value;
+} 
+
+void swap_1(double* i, double* j) {
+	double temp = *i;
 	*i = *j;
 	*j = temp;
 }
 
-int getValue() {
-	printf_s("Введите значение \n");
-	int value;
-	int res = scanf_s("%d", &value);
-	if (res != 1)
-	{
-		errno = EIO;
-		perror("ERROR");
-	    abort();
-	}
-	return value;
-}
-
-void swap_2(int *x, int *y){
+void swap_2(double *x, double *y){
 	*x = *x + *y;
 	*y = *x - *y;
 	*x = *x - *y;
