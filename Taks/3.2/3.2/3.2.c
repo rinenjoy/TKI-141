@@ -16,7 +16,7 @@ int factorial(int n);
 * @param k = 1 - первый член последовательности
 * @return вычесленное значение
 */
-double do_first();
+double doFirst();
 
 /*
 * @brief проверяет пользовательский ввод
@@ -84,7 +84,7 @@ int factorial(int n) {
 	return fact;
 }
 
-double do_first() {
+double doFirst() {
 	return (-1.0) * factorial(1) / factorial(5);
 }
 
@@ -95,7 +95,7 @@ double getRecurrent(int k)
 
 double getSum(int n)
 {
-	double current = do_first();
+	double current = doFirst();
 	double sum = current;
 	for (int k = 1; k < n; k++) 
 	{
@@ -107,7 +107,7 @@ double getSum(int n)
 
 double getSumNotLessThanE(int n, double e)
 { 
-	double current = do_first();
+	double current = doFirst();
 	double sum = current;
 	int k = 1; 
 	if (fabs(current) - e >= DBL_MIN)
