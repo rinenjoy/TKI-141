@@ -116,7 +116,6 @@ double getSumNotLessThanE(int n, double e)
 		{
 			current *= getRecurrent(k);
 			sum += current;
-			k++;
 		}	
 	}
 	return sum;
