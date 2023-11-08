@@ -4,6 +4,7 @@
 #include <stdlib.h>	
 #include <float.h>
 
+/*
 * @brief проверяет пользовательский ввод
 * @return введеное значение
 */ 
@@ -44,6 +45,7 @@ int main() {
 	double summNotLessThanE = getSumNotLessThanE(n, e);
 	printf_s("Сумма первых членов ряда = %.15lf\n", summ); 
 	printf_s("Сумма всех членов последовательности, не меньших заданного числа e = %.15lf\n", summNotLessThanE);
+} 
 
 double getValue()
 { 
@@ -57,6 +59,7 @@ double getValue()
 	} 
 	return value;
 }
+
 double getRecurrent(int k)
 {
 	return (double)(- 1.0 * (k + 1) / (k + 5));
@@ -64,7 +67,7 @@ double getRecurrent(int k)
 
 double getSum(int n)
 {
-
+	double current = - 0.008333333;
 	double sum = current;
 	for (int k = 1; k < n; k++) 
 	{
@@ -76,7 +79,7 @@ double getSum(int n)
 
 double getSumNotLessThanE(int n, double e)
 { 
-
+	double current = -0.008333333;
 	double sum = current;
 	int k = 1; 
 	if (fabs(current) - e >= DBL_MIN)
@@ -85,6 +88,7 @@ double getSumNotLessThanE(int n, double e)
 		{
 			current *= getRecurrent(k);
 			sum += current;
+			k++;
 		}	
 	}
 	return sum;
