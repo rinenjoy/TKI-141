@@ -4,21 +4,6 @@
 #include <stdlib.h>	
 #include <float.h>
 
-/*
-* @brief Функция считает факторал
-* @param n = число, от которого надо вычислить факториал
-* @return вычесленное значение 
-*/
-int factorial(int n);
-
-/*
-* @brief Функция считает первое значение ряда
-* @param k = 1 - первый член последовательности
-* @return вычесленное значение
-*/
-double doFirst();
-
-/*
 * @brief проверяет пользовательский ввод
 * @return введеное значение
 */ 
@@ -59,8 +44,6 @@ int main() {
 	double summNotLessThanE = getSumNotLessThanE(n, e);
 	printf_s("Сумма первых членов ряда = %.15lf\n", summ); 
 	printf_s("Сумма всех членов последовательности, не меньших заданного числа e = %.15lf\n", summNotLessThanE);
-	return 0;
-} 
 
 double getValue()
 { 
@@ -74,20 +57,6 @@ double getValue()
 	} 
 	return value;
 }
-
-int factorial(int n) {
-	int fact = 1;
-	for (int i = 1; i <= n; i++)
-	{
-		fact *= i;
-	}
-	return fact;
-}
-
-double doFirst() {
-	return (-1.0) * factorial(1) / factorial(5);
-}
-
 double getRecurrent(int k)
 {
 	return (double)(- 1.0 * (k + 1) / (k + 5));
@@ -95,7 +64,7 @@ double getRecurrent(int k)
 
 double getSum(int n)
 {
-	double current = doFirst();
+
 	double sum = current;
 	for (int k = 1; k < n; k++) 
 	{
@@ -107,7 +76,7 @@ double getSum(int n)
 
 double getSumNotLessThanE(int n, double e)
 { 
-	double current = doFirst();
+
 	double sum = current;
 	int k = 1; 
 	if (fabs(current) - e >= DBL_MIN)
