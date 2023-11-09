@@ -32,7 +32,6 @@ double get_step();
 int main() {
 	double const a = 0.1;
 	double const b = 1.0;
-
 	printf_s("Enter step\n");
 	double step = get_step();
 	double const e = pow(10, -4);
