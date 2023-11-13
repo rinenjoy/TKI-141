@@ -64,10 +64,12 @@ double get_sum(double x, double e)
 	int n = 1;
 	double s_n = (pow(x, 2) * (2 * n + 3)) / ((n + 1) * (2 * n + 1));
 	sum += s_n;
-	for (int n = 2; s_n - e > DBL_EPSILON; n++)
+	for (int n = 2; n <= 10; n++)
 	{
 		s_n = (pow(x, 2) * (2 * n + 3)) / ((n + 1) * (2 * n + 1));
-		sum += s_n;
+		if (s_n - e > DBL_EPSILON) {
+			sum += s_n;
+		}
 	}
 	return sum;
 }
