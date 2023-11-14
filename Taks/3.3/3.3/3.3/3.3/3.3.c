@@ -5,12 +5,13 @@
 #include <math.h>
 
 /*
-* @brief Функция считает сумму ряда
+* @brief Функция считает сумму ряда с заданной точностью
 * @param x - аргумент
+* @param func - посчитанная функция в данной точке
 * @param e - заданная точность
 * @return сумму
 */
-double get_sum(double x, double e);
+double get_sum(double x, double func, double e);
 
 /*
 * @brief Заданная функция
@@ -34,13 +35,13 @@ int main() {
 	double const b = 1.0;
 	printf_s("Enter step\n");
 	double step = get_step();
-	double const e = pow(10, -4);
+	double const e = 2*pow(10, -1);
 	printf_s("Argument\t\tFunction\t\tSumma\n");
 	for (double i = a; i - b <= DBL_EPSILON; i += step)
 	{
 		//double arg = i;
 		double func = function(i);
-		double sum = get_sum(i, e);
+		double sum = get_sum(i,func,e);
 		printf_s("%lf\t\t%lf\t\t%lf\n", i, func, sum);
 	}
 	return 0;
@@ -49,7 +50,7 @@ int main() {
 double get_step() {
 	double step;
 	int res = scanf_s("%lf", &step);
-	if (res != 1 || step - 1.0 > DBL_EPSILON)
+	if (res != 1 || step - 1.0 > - DBL_EPSILON)
 	{
 		errno = EIO;
 		perror ("ERROR");
@@ -58,18 +59,15 @@ double get_step() {
 	return step;
 }
 
-double get_sum(double x, double e)
+double get_sum(double x, double func, double const e)
 {
-	double sum = 0.0;
-	int n = 1;
-	double s_n = (pow(x, 2) * (2 * n + 3)) / ((n + 1) * (2 * n + 1));
-	sum += s_n;
-	for (int n = 2; n <= 10; n++)
-	{
-		s_n = (pow(x, 2) * (2 * n + 3)) / ((n + 1) * (2 * n + 1));
-		if (s_n - e > DBL_EPSILON) {
-			sum += s_n;
-		}
+	double current = 1.0;
+	double sum = current;
+	double n = 1.0;
+	while (func - sum - e > DBL_EPSILON) {
+		current = current*(pow(x, 2) * (2 * n + 3)) / ((n + 1) * (2 * n + 1));
+		sum += current;
+		n++;
 	}
 	return sum;
 }
