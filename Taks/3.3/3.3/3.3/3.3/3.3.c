@@ -35,14 +35,14 @@ int main() {
 	double const b = 1.0;
 	printf_s("Enter step\n");
 	double step = get_step();
-	double const e = 2*pow(10, -1);
-	printf_s("Argument\t\tFunction\t\tSumma\n");
+	double const e = pow(10, -2);
+	printf_s("Argument\tFunction\tSumma\n");
 	for (double i = a; i - b <= DBL_EPSILON; i += step)
 	{
 		//double arg = i;
 		double func = function(i);
 		double sum = get_sum(i,func,e);
-		printf_s("%lf\t\t%lf\t\t%lf\n", i, func, sum);
+		printf_s("%.2lf\t\t%lf\t\t%lf\n", i, func, sum);
 	}
 	return 0;
 }
@@ -64,8 +64,8 @@ double get_sum(double x, double func, double const e)
 	double current = 1.0;
 	double sum = current;
 	double n = 1.0;
-	while (func - sum - e > DBL_EPSILON) {
-		current = current*(pow(x, 2) * (2 * n + 3)) / ((n + 1) * (2 * n + 1));
+	while (func - sum - e > - DBL_EPSILON) {
+		current = current*(pow(x, 2)/(n+1));
 		sum += current;
 		n++;
 	}
