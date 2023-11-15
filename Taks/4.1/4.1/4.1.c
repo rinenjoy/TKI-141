@@ -25,10 +25,10 @@ int fill_random(const int size, int* array);
 */
 int main() {
 	const int size = 10;
-	int a = (int*)malloc(size * sizeof(int));
+	int* a = (int*)malloc(size * sizeof(int));
 	fill_random(size, a);
 	for (int j = 0; j < size; j++) {
-		printf_s("%d",(*a + j)
+		printf_s("%d\t", a[j]);
 	}
 	return 0;
 }
@@ -36,7 +36,7 @@ int main() {
 int fill_random(const int size, int* array) {
 	srand(time(NULL));
 	for (size_t i = 0; i < size; i++) {
-		*array + i = rand();
+		array[i] = rand();
 	}
 	return 0;
 }
