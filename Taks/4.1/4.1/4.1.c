@@ -165,11 +165,11 @@ int get_sum_10(int* array, size_t size)
 
 void exchange_array(int* array, size_t size)
 {
-	for (size_t i = 0; i < size && i < 10; i++)
+	for (size_t i = 0; i < size && i < 5; i++)
 	{
 		int temp = array[i];
-		array[i] = array[9 - i];
-		array[9 - i] = temp;
+		array[i] = array[9 - i -1];
+		array[9 - i - 1] = temp;
 	}
 }
 
