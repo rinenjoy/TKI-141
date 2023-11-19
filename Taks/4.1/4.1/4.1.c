@@ -39,6 +39,7 @@ void exchange_array(int* array,size_t size);
 * @brief определяет существует ли такая пара элементов с произедением, равным заданному числу
 * @param array - массив
 * @param chislo - введенное число
+* @param size - размер массива
 * @return True/False
 */
 bool is_exist_para(int* array,int chislo,size_t size);
