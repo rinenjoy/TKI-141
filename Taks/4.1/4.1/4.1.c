@@ -3,6 +3,7 @@
 #include <float.h>
 #include <errno.h>
 #include <time.h>
+#include <stdbool.h>
 
 /*
 * @brief Выбор пользователя
@@ -33,6 +34,14 @@ int get_sum_10(int* array, size_t size);
 * @return изменённый массив
 */
 void exchange_array(int* array,size_t size);
+
+/*
+* @brief определяет существует ли такая пара элементов с произедением, равным заданному числу
+* @param array - массив
+* @param chislo - введенное число
+* @return True/False
+*/
+bool is_exist_para(int* array,int chislo,size_t size);
 
 /*
 * @brief предлагает выбор пользователю
@@ -111,11 +120,11 @@ int main() {
 	{
 		case (fill_randomm):
 			fill_random(size, array);
-			puts("\nМассив заполнен рандомными числами\n");
+			puts("\nМассив заполнен рандомными числами:\n");
 			break;
 		case (fill_by_my_self):
 			fill_by_your_self(size, array);
-			puts("\nВы заполнили массив\n");
+			puts("\nВы заполнили массив:\n");
 			break;
 		default:
 			printf_s("Вы ввели неправильное значение\n");
@@ -126,6 +135,8 @@ int main() {
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
 	int sum;
+	int chislo;
+	bool para_chisel;
 	switch (action)
 	{
 		case (sum_10):
@@ -140,12 +151,22 @@ int main() {
 			print_array(array, size);
 			break;
 		case (para):
-			puts("LOL");
+			chislo = get_value("Введите число\t");
+			para_chisel = is_exist_para(array, chislo, size);
+			if (para_chisel == true)
+			{
+				puts("\nСуществует такая пара элементов с произедением, равным заданному числу\n");
+			}
+			else
+			{
+				puts("\nНе существует такой пары элементов с произедением, равным заданному числу\n");
+			}
 			break;
 		default:
 			break;
 	}
 	free_array(array);
+	puts("\nGame over");
 	return 0;
 
 }
@@ -171,6 +192,22 @@ void exchange_array(int* array, size_t size)
 		array[i] = array[9 - i -1];
 		array[9 - i - 1] = temp;
 	}
+}
+
+bool is_exist_para(int* array, int chislo,size_t size)
+{
+	size_t k = 0; //кол-во пар
+	for (size_t i = 0; i < size; i++)
+	{
+		int p = array[i] * array[i + 1];
+		if (p == chislo)
+			k++;
+	}
+	if (k > 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 int get_choice_fill()
