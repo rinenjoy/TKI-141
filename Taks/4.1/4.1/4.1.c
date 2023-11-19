@@ -29,7 +29,7 @@ enum action {sum_10, exchange, para};
 int get_sum_10(int* array, size_t size);
 
 /*
-* @brief Меняет положение первых l элементов 
+* @brief Меняет положение первых k элементов 
 * @param array - массив 
 * @param size - размер массива
 * @return изменённый массив
