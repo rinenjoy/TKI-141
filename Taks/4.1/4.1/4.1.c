@@ -14,8 +14,9 @@ enum fill_in{fill_randomm, fill_by_my_self};
 
 /*
 * @brief Выбор пользователя
-* @param fill_random - Заполнение массива пользователем
-* @param fill_by_my_self - Заполнение массива рандомными числами
+* @param sum_10 - Найти сумму отрицательных элементов, значения которых кратно 10
+* @param exchange - Заменить первые k элементов массива на те же элементы в обратном порядке
+* @param para - Определить, есть ли пара соседних элементов с произведением, pавным заданном числу
 */
 enum action {sum_10, exchange, para};
 
@@ -28,12 +29,12 @@ enum action {sum_10, exchange, para};
 int get_sum_10(int* array, size_t size);
 
 /*
-* @brief Меняет положение первых 10 элементов 
+* @brief Меняет положение первых l элементов 
 * @param array - массив 
 * @param size - размер массива
 * @return изменённый массив
 */
-void exchange_array(int* array,size_t size);
+void exchange_array(int* array,size_t size, size_t k);
 
 /*
 * @brief определяет существует ли такая пара элементов с произедением, равным заданному числу
@@ -69,7 +70,7 @@ int get_value(const char* massage);
 * @param value введенное значение
 * @return размер массива
 */
-size_t get_size(int value);
+size_t get_size_t(int value);
 
 /*
 * @brief создает массив
@@ -113,7 +114,7 @@ void print_array(int* array, size_t size);
 */
 int main() {
 	int size_0 = get_value("Введите размер массива\t");
-	const size_t size = get_size(size_0);
+	const size_t size = get_size_t(size_0);
 	int* array = get_array(size);
 	int choice_1 = get_choice_fill();
 	enum fill_in fill_in = (enum fill_in)choice_1;
@@ -136,6 +137,8 @@ int main() {
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
 	int sum;
+	int k_0;
+	int k;
 	int chislo;
 	bool para_chisel;
 	switch (action)
@@ -145,10 +148,12 @@ int main() {
 			printf_s("Сумма отрицательных чисел, кратных 10 = %d\n", sum);
 			break;
 		case (exchange):
+			k_0 = get_value("Сколко элементов хотите поменять?\t");
+			k = get_size_t(k_0);
 			printf_s("\nМассив до:\t");
 			print_array(array, size);
 			printf_s("\nМассив после:\t");
-			exchange_array(array, size);
+			exchange_array(array, size, k);
 			print_array(array, size);
 			break;
 		case (para):
@@ -185,13 +190,18 @@ int get_sum_10(int* array, size_t size)
 	return sum;
 }
 
-void exchange_array(int* array, size_t size)
+void exchange_array(int* array, size_t size, size_t k)
 {
-	for (size_t i = 0; i < size && i < 5; i++)
+	int l = k / 2;
+	if (l % 2 == 1)
+	{
+		l++;
+	}
+	for (int i = 0; i < size && i < l; i++)
 	{
 		int temp = array[i];
-		array[i] = array[9 - i -1];
-		array[9 - i - 1] = temp;
+		array[i] = array[k - i - 1];
+		array[k - i - 1] = temp;
 	}
 }
 
@@ -239,7 +249,7 @@ int get_value(const char* massage)
 	return value;
 }
 
-size_t get_size(int value)
+size_t get_size_t(int value)
 {
 	if (value <= 0)
 	{
