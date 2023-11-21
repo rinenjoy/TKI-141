@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
 
 /*
 * @brief Выбор пользователя
@@ -29,9 +30,10 @@ enum action {sum_10, exchange, para};
 int get_sum_10(int* array, size_t size);
 
 /*
-* @brief Меняет положение первых k элементов 
+* @brief Заняет первые k элементов на те же элементы, записанные в обратном порядке
 * @param array - массив 
 * @param size - размер массива
+* @param k - кол-во элементов, которые нужно поменять
 * @return изменённый массив
 */
 void exchange_array(int* array,size_t size, size_t k);
@@ -201,16 +203,26 @@ int get_sum_10(int* array, size_t size)
 
 void exchange_array(int* array, size_t size, size_t k)
 {
-	int l = k / 2;
-	if (l % 2 == 1)
+	for (int i = 0; i < size && i < k; i++)
 	{
-		l++;
-	}
-	for (int i = 0; i < size && i < l; i++)
-	{
-		int temp = array[i];
-		array[i] = array[k - i - 1];
-		array[k - i - 1] = temp;
+		char str[10];
+		snprintf(str, sizeof(str), "%d", array[i]);
+		int l;
+		int condition = 1;
+		if (array[i] < 0)
+		{
+			l = 1;
+			condition = -1;
+		}
+		l = 0;
+		for (int j = strlen(str) - 1; l < j; l++, j--)
+		{
+			char temp = str[l];
+			str[l] = str[j];
+			str[j] = temp;
+		}
+		int result = condition *  atoi(str);
+		array[i] = result;
 	}
 }
 
