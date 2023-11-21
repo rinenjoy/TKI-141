@@ -83,17 +83,21 @@ int* get_array(const size_t size);
 * @brief Заполняет массив рандомными числами
 * @param size - размер массива
 * @param array - массив
+* @param range_right - правая граница диапазона
+* @param range_left - левая граница диапазона
 * @return 0 - в случае успеха
 */
-int fill_random(const size_t size, int* array);
+int fill_random(const size_t size, int* array, int range_right, int range_left);
 
 /*
 * @brief Пользователь заполняет массив
 * @param size - размер массива
-* @param array -массив
+* @param array - массив
+* @param range_right - правая граница диапазона
+* @param range_left - левая граница диапазона
 * @return 0 - в случае успеха
 */
-int fill_by_your_self(const size_t size, int* array);
+int fill_by_your_self(const size_t size, int* array, int range_right, int range_left);
 
 /*
 * @brief чистит использованную память
@@ -116,36 +120,41 @@ int main() {
 	int size_0 = get_value("Введите размер массива\t");
 	const size_t size = get_size_t(size_0);
 	int* array = get_array(size);
+	int range_left = get_value("\nВведите левую границу диапозона\t");
+	int range_right = get_value("\nВведите правую границу диапозона\t");
+	if (range_left > range_right)
+	{
+		errno = EIO;
+		perror("ERROR");
+		return 1;
+	}
 	int choice_1 = get_choice_fill();
 	enum fill_in fill_in = (enum fill_in)choice_1;
 	switch (fill_in)
 	{
 		case (fill_randomm):
-			fill_random(size, array);
+			fill_random(size, array, range_right, range_left);
 			puts("\nМассив заполнен рандомными числами:\n");
 			break;
 		case (fill_by_my_self):
-			fill_by_your_self(size, array);
+			fill_by_your_self(size, array, range_right, range_left);
 			puts("\nВы заполнили массив:\n");
 			break;
 		default:
 			printf_s("Вы ввели неправильное значение\n");
-			return errno;
-			abort();
+			errno = EIO;
+			return 1;
 	}
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
-	int sum;
 	int k_0;
 	int k;
-	int chislo;
-	bool para_chisel;
+	int number;
 	switch (action)
 	{
 		case (sum_10):
-			sum = get_sum_10(array, size);
-			printf_s("Сумма отрицательных чисел, кратных 10 = %d\n", sum);
+			printf_s("Сумма отрицательных чисел, кратных 10 = %d\n", get_sum_10(array, size));
 			break;
 		case (exchange):
 			k_0 = get_value("Сколко элементов хотите поменять?\t");
@@ -157,9 +166,8 @@ int main() {
 			print_array(array, size);
 			break;
 		case (para):
-			chislo = get_value("Введите число\t");
-			para_chisel = is_exist_para(array, chislo, size);
-			if (para_chisel == true)
+			number = get_value("Введите число\t");
+			if (is_exist_para(array, number, size) == true)
 			{
 				puts("\nСуществует такая пара элементов с произедением, равным заданному числу\n");
 			}
@@ -169,7 +177,8 @@ int main() {
 			}
 			break;
 		default:
-			break;
+			perror("ERROR");
+			return 1;
 	}
 	free_array(array);
 	puts("\nGame over");
@@ -205,18 +214,18 @@ void exchange_array(int* array, size_t size, size_t k)
 	}
 }
 
-bool is_exist_para(int* array, int chislo,size_t size)
+bool is_exist_para(int* array, int number,size_t size)
 {
 	size_t k = 0; //кол-во пар
 	for (size_t i = 0; i < size; i++)
 	{
 		int p = array[i] * array[i + 1];
-		if (p == chislo)
+		if (p == number)
 			k++;
-	}
-	if (k > 0)
-	{
-		return true;
+		if (k > 0) 
+		{
+			return true;
+		}
 	}
 	return false;
 }
@@ -272,21 +281,28 @@ int* get_array(const size_t size)
 	return array;
 }
 
-int fill_random(const size_t size, int* array) 
+int fill_random(const size_t size, int* array, int range_right, int range_left)
 {
 	time_t ttime = time(NULL);
 	srand(ttime);
 	for (size_t i = 0; i < size; i++) {
-		array[i] = rand() % 2000 - 1000;
+		array[i] = rand() % (range_right - range_left + 1) + range_left;
 	}
-	return 0;
+	return 0;	
 }
 
-int fill_by_your_self(const size_t size, int* array)
+int fill_by_your_self(const size_t size, int* array, int range_right, int range_left)
 {
 	for (size_t i = 0; i < size; i++)
 	{
-		array[i] = get_value("Введите элемент массива\t");
+		int element = get_value("Введите элемент массива в введенном диапазоне:\t");
+		if (element > range_right || element < range_left)
+		{
+			perror("ERROR");
+			errno = EIO;
+			abort();
+		}
+		array[i] = element;
 	}
 	return 0;
 }
