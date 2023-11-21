@@ -10,14 +10,47 @@
 * @param fill_random - Заполнение массива пользователем
 * @param fill_by_my_self - Заполнение массива рандомными числами
 */
-enum fill_in { fill_randomm, fill_by_my_self };
+enum fill_in {fill_randomm, fill_by_my_self};
 
 /*
 * @brief Выбор пользователя
-* @param
-* @param 
+* @param min_middle Заменить минимальный элемент массива на средний (количество элементов – нечетно)
+* @param delete_5 Удалить из массива все элементы, в записи которых есть цифра 5
+* @param new_array Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci2, если нечетный, то Ai=2Ci.
 */
-enum action {};
+enum action {min_middle; delete_5; new_array};
+
+/*
+* @brief Заменяет минимальный элемент массива на средний
+* @param array - массив
+* @param min - минимальный элемент
+* @param middle - средний элемент
+* @param size - размер массива
+*/
+void min_middle(int* array, int min, int middle, size_t size);
+
+/*
+* @brief Ищет минимальный элемент массива
+* @param array - массив
+* @param size - размер массива
+* @return минимальный элемент
+*/
+int min_element(int* array, size_t size);
+
+/*
+* @brief Ищет средний элемент массива
+* @param array - массив
+* @param size - размер массива
+* @return средний элемент
+*/
+int middle_element(int* array, size_t size);
+
+/*
+* @brief Удаляет из массива все элементы, в записи которых есть цифра 5
+* @param array - массив
+* @param size - размер массива
+*/
+void delete_5(int* array, size_t size);
 
 /*
 * @brief предлагает выбор пользователю
@@ -40,7 +73,7 @@ int get_choice_action();
 int get_value(const char* massage);
 
 /*
-* @brief проверяет или введенное значение > 0
+* @brief проверяет чтобы введенное значение было > 0 и нечетное
 * @param value введенное значение
 * @return размер массива
 */
@@ -110,6 +143,7 @@ int main() {
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
+
 	free_array(array);
 	puts("\nGame over");
 	return 0;
@@ -129,6 +163,31 @@ int get_choice_action()
 	return choice;
 }
 
+void min_middle(int* array, int min, int middle, size_t size)
+{
+
+}
+
+int min_element(int* array, size_t size)
+{
+
+	return min;
+}
+
+int middle_element(int* array, size_t size)
+{
+	
+	return middle;
+}
+
+void delete_5(int* array, size_t size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		char str [5];
+	}
+}
+
 int get_value(const char* massage)
 {
 	int value = 0;
@@ -145,7 +204,7 @@ int get_value(const char* massage)
 
 size_t get_size(int value)
 {
-	if (value <= 0)
+	if (value <= 0 || value % 2 == 0)
 	{
 		errno = ENOMEM;
 		perror("wrong size");
