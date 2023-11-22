@@ -59,7 +59,6 @@ int get_choice_fill();
 */
 int get_choice_action();
 
-
 /*
 * @brief проверяет введенное значение
 * @param massage - сообщение для пользователя
