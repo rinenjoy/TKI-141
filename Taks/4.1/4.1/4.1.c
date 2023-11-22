@@ -4,7 +4,7 @@
 #include <errno.h>
 #include <time.h>
 #include <stdbool.h>
-#include <string.h>
+#include <string.h> //Длина строки - strlen()
 
 /*
 * @brief Выбор пользователя
@@ -75,6 +75,13 @@ int get_value(const char* massage);
 size_t get_size_t(int value);
 
 /*
+* @brief проверяет или введенный диапазон соответствует действительности
+* @param range_right - правая граница диапазона
+* @param range_left - левая граница диапазона
+*/
+void check_range(int range_right, int range_left);
+
+/*
 * @brief создает массив
 * @param size - размер массива
 * @return массив
@@ -124,12 +131,7 @@ int main() {
 	int* array = get_array(size);
 	int range_left = get_value("\nВведите левую границу диапозона\t");
 	int range_right = get_value("\nВведите правую границу диапозона\t");
-	if (range_left > range_right)
-	{
-		errno = EIO;
-		perror("ERROR");
-		return 1;
-	}
+	check_range(range_right, range_left);
 	int choice_1 = get_choice_fill();
 	enum fill_in fill_in = (enum fill_in)choice_1;
 	switch (fill_in)
@@ -279,6 +281,16 @@ size_t get_size_t(int value)
 		abort();
 	}
 	return (size_t)value;
+}
+
+void check_range(int range_right, int range_left)
+{
+	if (range_left > range_right)
+	{
+		errno = EIO;
+		perror("ERROR");
+		abort();
+	}
 }
 
 int* get_array(const size_t size)
