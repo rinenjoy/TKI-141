@@ -14,20 +14,32 @@ enum fill_in {fill_randomm, fill_by_my_self};
 
 /*
 * @brief Выбор пользователя
-* @param min_middle Заменить минимальный элемент массива на средний (количество элементов – нечетно)
-* @param delete_5 Удалить из массива все элементы, в записи которых есть цифра 5
+* @param min_middle_change Заменить минимальный элемент массива на средний (количество элементов – нечетно)
+* @param delete_element_with_5 Удалить из массива все элементы, в записи которых есть цифра 5
 * @param new_array Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci2, если нечетный, то Ai=2Ci.
 */
-enum action {min_middle; delete_5; new_array};
+enum action {min_middle_change, delete_element_with_5, new_array};
 
 /*
-* @brief Заменяет минимальный элемент массива на средний
+* @brief сортирует массив
 * @param array - массив
-* @param min - минимальный элемент
-* @param middle - средний элемент
 * @param size - размер массива
 */
-void min_middle(int* array, int min, int middle, size_t size);
+void sort_array(int* array, size_t size);
+
+/*
+* @brief используется для сравнения элементов массива
+*/
+int compare(const  void*, const void*);
+
+/*
+* @brief меняет минимальный элемент на средний
+* @param array - массив
+* @param size - размер массива
+* @param min_element - минимальный элемент массива
+* @param middle_element - средний элемент массива
+*/
+void min_middle(int* array, size_t size, int min_element, int middle_element);
 
 /*
 * @brief Ищет минимальный элемент массива
@@ -120,7 +132,7 @@ void print_array(int* array, size_t size);
 * @return 0, в случае успешного завершения программы
 */
 int main() {
-	int size_0 = get_value("Введите размер массива\t");
+	int size_0 = get_value("Введите размер массива(нечетное число)\t");
 	const size_t size = get_size(size_0);
 	int* array = get_array(size);
 	int choice_1 = get_choice_fill();
@@ -136,56 +148,99 @@ int main() {
 		puts("\nВы заполнили массив:\n");
 		break;
 	default:
-		printf_s("Вы ввели неправильное значение\n");
-		return errno;
-		abort();
+		errno = EIO;
+		perror("ERROR");
+		return 1;
 	}
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
+	int min;
+	int middle;
+	switch (action)
+	{
+	case (min_middle_change):
+		min = min_element(array, size);
+		middle = middle_element(array, size);
+		min_middle(array, size, min, middle);
+		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min, middle);
+		puts("\nМассив после:\t");
+		print_array(array, size);
+		break;
+	case (delete_element_with_5):
 
+		break;
+	case (new_array):
+
+		break;
+	default:
+		errno = EIO;
+		perror("ERROR");
+		return 1;
+	}
 	free_array(array);
-	puts("\nGame over");
+	puts("\n\nGame over");
 	return 0;
-
 }
 
 int get_choice_fill()
 {
-	printf_s("\n\n%d - Заполнить массив рандомными числами\n%d - заполнить массив самостоятельно\n\n", fill_randomm, fill_by_my_self);
-	int choice = get_value("Выберите действие:\t");
+	printf_s("\n\n%d - Заполнить массив рандомными числами\n%d - заполнить массив самостоятельно\n", fill_randomm, fill_by_my_self);
+	int choice = get_value("\nВыберите действие:\t");
 	return choice;
 }
 
 int get_choice_action()
 {
-	int choice = get_value("Выберите действие:\t");
+	printf_s("\n%d - Заменить минимальный элемент массива на средний\n%d - Удалить из массива все элементы, в записи которых есть цифра 5\n%d - Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci2, если нечетный, то Ai=2Ci.\n", min_middle_change, delete_element_with_5, new_array);
+	int choice = get_value("\nВыберите действие:\t");
 	return choice;
 }
 
-void min_middle(int* array, int min, int middle, size_t size)
+void sort_array(int* array, size_t size)
 {
+	qsort(array, size, sizeof(int), compare);
+}
 
+int compare(const void*i, const void*j)
+{
+	return *(int *)i - *(int *)j;
+}
+
+void min_middle(int* array, size_t size, int min_element, int middle_element)
+{
+	for (int j = 0; j < size; j++)
+	{
+		if (array[j] == min_element)
+		{
+			array[j] = middle_element;
+			break;
+		}
+	}
 }
 
 int min_element(int* array, size_t size)
 {
-
-	return min;
+	//puts("\nbefore \n");
+	//print_array(array, size);
+	sort_array(array, size);
+	//puts("\n\nafter\n");
+	//print_array(array, size);
+	return array[0];
 }
 
 int middle_element(int* array, size_t size)
 {
-	
-	return middle;
+	sort_array(array, size);
+	return array[(size / 2)];
 }
 
 void delete_5(int* array, size_t size)
 {
-	for (int i = 0; i < size; i++)
+	/*for (int i = 0; i < size; i++)
 	{
 		char str [5];
-	}
+	}*/
 }
 
 int get_value(const char* massage)
