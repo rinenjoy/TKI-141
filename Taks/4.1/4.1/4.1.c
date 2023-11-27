@@ -125,8 +125,7 @@ void print_array(int* array, size_t size);
 * @return 0, в случае успешного завершения программы
 */
 int main() {
-	int size_0 = get_value("Введите размер массива\t");
-	const size_t size = get_size_t(size_0);
+	const size_t size = get_size_t(get_value("Введите размер массива\t"));
 	int* array = get_array(size);
 	int range_left = get_value("\nВведите левую границу диапозона\t");
 	int range_right = get_value("\nВведите правую границу диапозона\t");
@@ -151,7 +150,6 @@ int main() {
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
-	int k_0;
 	int k;
 	int number;
 	switch (action)
@@ -160,8 +158,7 @@ int main() {
 			printf_s("Сумма отрицательных чисел, кратных 10 = %d\n", get_sum_10(array, size));
 			break;
 		case (exchange):
-			k_0 = get_value("Сколко элементов хотите поменять?\t");
-			k = get_size_t(k_0);
+			k = get_size_t(get_value("Сколко элементов хотите поменять?\t"));
 			printf_s("\nМассив до:\t");
 			print_array(array, size);
 			printf_s("\nМассив после:\t");
