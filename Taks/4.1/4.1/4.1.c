@@ -183,7 +183,6 @@ int main() {
 	free_array(array);
 	puts("\nGame over");
 	return 0;
-
 }
 
 int get_sum_10(int* array, size_t size)
