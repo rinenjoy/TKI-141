@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
 
 /*
 * @brief Выбор пользователя
@@ -25,7 +26,14 @@ enum action {min_middle_change, delete_element_with_5, new_array};
 * @param array - массив
 * @param size - размер массива
 */
-void sort_array(int* array, size_t size);
+void bubble_sort(int* array, size_t size);
+
+/*
+* @brief меняет два элемента местами
+* @param a - элемент массива 
+* @param b - элемент массива
+*/
+void swap(int* a, int* b);
 
 /*
 * @brief используется для сравнения элементов массива
@@ -168,7 +176,7 @@ int main() {
 		print_array(array, size);
 		break;
 	case (delete_element_with_5):
-
+		delete_5(array, size);
 		break;
 	case (new_array):
 
@@ -197,9 +205,25 @@ int get_choice_action()
 	return choice;
 }
 
-void sort_array(int* array, size_t size)
+void bubble_sort(int* array, size_t size)
 {
-	qsort(array, size, sizeof(int), compare);
+	for (size_t i = 0; i < size - 1; i++)
+	{
+		for (size_t j = i + 1; j < size - i - 1; j++)
+		{
+			if (array[j] > array[j + 1])
+			{
+				swap(&array[j], &array[j + 1]);
+			}
+		}
+	}
+}
+
+void swap(int* a, int* b)
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
 int compare(const void*i, const void*j)
@@ -221,26 +245,33 @@ void min_middle(int* array, size_t size, int min_element, int middle_element)
 
 int min_element(int* array, size_t size)
 {
-	//puts("\nbefore \n");
-	//print_array(array, size);
-	sort_array(array, size);
-	//puts("\n\nafter\n");
-	//print_array(array, size);
+	bubble_sort(array, size);
 	return array[0];
 }
 
 int middle_element(int* array, size_t size)
 {
-	sort_array(array, size);
+	bubble_sort(array, size);
 	return array[(size / 2)];
 }
 
 void delete_5(int* array, size_t size)
 {
-	/*for (int i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
-		char str [5];
-	}*/
+		char str [50];
+		sprintf_s(str, "%d", array[i]);
+		for (int j = 0; j < strlen(str); j++)
+		{
+			if (str[j] == "5")
+			{
+				for (int l = i; l < size; l++)
+				{
+					array[l] = array[l + 1];
+				}
+			}
+		}
+	}
 }
 
 int get_value(const char* massage)
