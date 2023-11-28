@@ -4,20 +4,20 @@
 #include <errno.h>
 #include <time.h>
 #include <stdbool.h>
-#include <string.h> //Длина строки - strlen()
+#include <assert.h>
 
 /*
 * @brief Выбор пользователя
-* @param fill_random - Заполнение массива пользователем
-* @param fill_by_my_self - Заполнение массива рандомными числами
+* @brief fill_random - Заполнение массива пользователем
+* @brief fill_by_my_self - Заполнение массива рандомными числами
 */
 enum fill_in{fill_randomm, fill_by_my_self};
 
 /*
 * @brief Выбор пользователя
-* @param sum_10 - Найти сумму отрицательных элементов, значения которых кратно 10
-* @param exchange - Заменить первые k элементов массива на те же элементы в обратном порядке
-* @param para - Определить, есть ли пара соседних элементов с произведением, pавным заданном числу
+* @brief sum_10 - Найти сумму отрицательных элементов, значения которых кратно 10
+* @brief exchange - Заменить первые k элементов массива на те же элементы в обратном порядке
+* @brief para - Определить, есть ли пара соседних элементов с произведением, pавным заданном числу
 */
 enum action {sum_10, exchange, para};
 
@@ -33,19 +33,24 @@ int get_sum_10(int* array, size_t size);
 * @brief Заняет первые k элементов на те же элементы, записанные в обратном порядке
 * @param array - массив 
 * @param size - размер массива
-* @param k - кол-во элементов, которые нужно поменять
 * @return изменённый массив
 */
-void exchange_array(int* array,size_t size, size_t k);
+void exchange_array(int* array,size_t size);
+
+/*
+* @brief меняет переменные
+* @param a - переменная
+* @param b - переменная
+*/
+void swap(int* a, int* b);
 
 /*
 * @brief определяет существует ли такая пара элементов с произедением, равным заданному числу
 * @param array - массив
-* @param chislo - введенное число
 * @param size - размер массива
 * @return True/False
 */
-bool is_exist_para(int* array,int chislo,size_t size);
+bool is_exist_para(int* array, size_t size);
 
 /*
 * @brief предлагает выбор пользователю
@@ -141,7 +146,7 @@ int main() {
 		case (fill_by_my_self):
 			fill_by_your_self(size, array, range_right, range_left);
 			puts("\nВы заполнили массив:\n");
-			break;
+			break; 
 		default:
 			printf_s("Вы ввели неправильное значение\n");
 			errno = EIO;
@@ -150,24 +155,20 @@ int main() {
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
-	int k;
-	int number;
 	switch (action)
 	{
 		case (sum_10):
 			printf_s("Сумма отрицательных чисел, кратных 10 = %d\n", get_sum_10(array, size));
 			break;
 		case (exchange):
-			k = get_size_t(get_value("Сколко элементов хотите поменять?\t"));
 			printf_s("\nМассив до:\t");
 			print_array(array, size);
 			printf_s("\nМассив после:\t");
-			exchange_array(array, size, k);
+			exchange_array(array, size);
 			print_array(array, size);
 			break;
 		case (para):
-			number = get_value("Введите число\t");
-			if (is_exist_para(array, number, size) == true)
+			if (is_exist_para(array, size))
 			{
 				puts("\nСуществует такая пара элементов с произедением, равным заданному числу\n");
 			}
@@ -177,7 +178,8 @@ int main() {
 			}
 			break;
 		default:
-			perror("ERROR");
+			errno = EIO;
+			perror("Вы ввели неверное значение");
 			return 1;
 	}
 	free_array(array);
@@ -198,40 +200,30 @@ int get_sum_10(int* array, size_t size)
 	return sum;
 }
 
-void exchange_array(int* array, size_t size, size_t k)
+void exchange_array(int* array, size_t size)
 {
-	for (int i = 0; i < size && i < k; i++)
+	size_t k = get_size_t(get_value("Сколко элементов хотите поменять?\t"));
+	assert(k < size);
+	size_t l = k / 2;
+	for (int i = 0; i < l; i++)
 	{
-		char str[10];
-		snprintf(str, sizeof(str), "%d", array[i]);
-		int l;
-		int condition = 1;
-		if (array[i] < 0)
-		{
-			l = 1;
-			condition = -1;
-		}
-		l = 0;
-		for (int j = strlen(str) - 1; l < j; l++, j--)
-		{
-			char temp = str[l];
-			str[l] = str[j];
-			str[j] = temp;
-		}
-		int result = condition *  atoi(str);
-		array[i] = result;
+		swap(&(array[i]), &(array[k - i - 1]));
 	}
 }
 
-bool is_exist_para(int* array, int number,size_t size)
+void swap(int* a, int* b)
 {
-	size_t k = 0; //кол-во пар
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+bool is_exist_para(int* array, size_t size)
+{
+	int number = get_value("Введите число\t");
 	for (size_t i = 0; i < size; i++)
 	{
-		int p = array[i] * array[i + 1];
-		if (p == number)
-			k++;
-		if (k > 0) 
+		if (array[i] * array[i + 1] == number)
 		{
 			return true;
 		}
@@ -302,7 +294,7 @@ int* get_array(const size_t size)
 
 int fill_random(const size_t size, int* array, int range_right, int range_left)
 {
-	time_t ttime = time(NULL);
+	unsigned int ttime = time(NULL);
 	srand(ttime);
 	for (size_t i = 0; i < size; i++) {
 		array[i] = rand() % (range_right - range_left + 1) + range_left;
