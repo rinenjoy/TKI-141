@@ -60,10 +60,30 @@ int min_element(int* array, size_t size);
 */
 int middle_element(int* array, size_t size);
 
-
+/*
+* @brief считает сколько элементов с цифрой 5 в числе
+* @param array - массив
+* @param size - размер массива
+* @return кол-во элементов с цифрой 5 в числе
+*/
 int amount_5(int* array, size_t size);
+
+/*
+* @brief Определяет, есть ли цифра пять в числе
+* @param а - элемент массива(число)
+* @return true, если цифра пять есть в числе
+*/
 bool is_5(int a);
+
+/*
+* @brief заполняет массив элементами без цифры 5
+* @param array - массив
+* @param size - размер массива
+* @param k - кол-во элементов с цифрой 5 в числе
+* @return заполненный массив
+*/
 int* fill_array_5(int* array, size_t k, size_t size);
+
 /*
 * @brief предлагает выбор пользователю
 * @return введенный номер действия
@@ -97,6 +117,14 @@ size_t get_size(int value);
 * @return массив
 */
 int* get_array(const size_t size);
+
+/*
+* @brief создает и заполняет массив по правилу:  если номер i элемента четный, то Ai=Ci2, если нечетный, то Ai=2Ci
+* @param array - массив
+* @param size - размер массива
+* @return новый массив
+*/
+int* fill_new_array(int* array, const size_t size);
 
 /*
 * @brief Заполняет массив рандомными числами
@@ -149,18 +177,24 @@ int main() {
 		break;
 	default:
 		errno = EIO;
-		perror("ERROR");
+		perror("Вы ввели неверное значение");
 		return 1;
 	}
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
+	int min = 0;
+	int middle = 0;
 	int k = 0;
+	int* array_without_5 = NULL;
+	int* new_arr = NULL;
 	switch (action)
 	{
 	case (min_middle_change):
-		min_middle(array, size, min_element(array, size), middle_element(array, size));
-		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min_element(array, size), middle_element(array, size));
+		min = min_element(array, size);
+		middle = middle_element(array, size);
+		min_middle(array, size, min, middle);
+		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min, middle);
 		puts("\nМассив после:\t");
 		print_array(array, size);
 		break;
@@ -169,14 +203,18 @@ int main() {
 		print_array(array, size);
 		k = amount_5(array, size);
 		puts("\nМассив после:\t");
-		print_array(fill_array_5(array, k, size), (size - k));
+		array_without_5 = fill_array_5(array, k, size);
+		print_array(array_without_5, (size - k));
+		free_array(array_without_5);
 		break;
 	case (new_array):
-
+		new_arr = fill_new_array(array, size);
+		print_array(new_arr, size);
+		free_array(new_arr);
 		break;
 	default:
 		errno = EIO;
-		perror("ERROR");
+		perror("Вы ввели неверное значение");
 		return 1;
 	}
 	free_array(array);
@@ -202,7 +240,7 @@ void bubble_sort(int* array, size_t size)
 {
 	for (size_t i = 0; i < size - 1; i++)
 	{
-		for (size_t j = 0; j < size; j++)
+		for (size_t j = 0; j < size - i - 1; j++)
 		{
 			if (array[j] > array[j + 1])
 			{
@@ -326,6 +364,23 @@ int* get_array(const size_t size)
 		abort();
 	}
 	return array;
+}
+
+int* fill_new_array(int* array, const size_t size)
+{
+	int* new_array = get_array(size);
+	for (int i = 0; i < size; i++)
+	{
+		if (i % 2 == 0)
+		{
+			new_array[i] = array[i] * array[i];
+		}
+		else
+		{
+			new_array[i] = 2 * array[i];
+		}
+	}
+	return new_array;
 }
 
 int fill_random(const size_t size, int* array)
