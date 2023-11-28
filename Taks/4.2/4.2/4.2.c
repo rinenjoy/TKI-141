@@ -8,16 +8,16 @@
 
 /*
 * @brief Выбор пользователя
-* @param fill_random - Заполнение массива пользователем
-* @param fill_by_my_self - Заполнение массива рандомными числами
+* @brief fill_random - Заполнение массива пользователем
+* @brief fill_by_my_self - Заполнение массива рандомными числами
 */
 enum fill_in {fill_randomm, fill_by_my_self};
 
 /*
 * @brief Выбор пользователя
-* @param min_middle_change Заменить минимальный элемент массива на средний (количество элементов – нечетно)
-* @param delete_element_with_5 Удалить из массива все элементы, в записи которых есть цифра 5
-* @param new_array Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci2, если нечетный, то Ai=2Ci.
+* @brief min_middle_change Заменить минимальный элемент массива на средний (количество элементов – нечетно)
+* @brief delete_element_with_5 Удалить из массива все элементы, в записи которых есть цифра 5
+* @brief new_array Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci2, если нечетный, то Ai=2Ci.
 */
 enum action {min_middle_change, delete_element_with_5, new_array};
 
@@ -34,11 +34,6 @@ void bubble_sort(int* array, size_t size);
 * @param b - элемент массива
 */
 void swap(int* a, int* b);
-
-/*
-* @brief используется для сравнения элементов массива
-*/
-int compare(const  void*, const void*);
 
 /*
 * @brief меняет минимальный элемент на средний
@@ -65,13 +60,10 @@ int min_element(int* array, size_t size);
 */
 int middle_element(int* array, size_t size);
 
-/*
-* @brief Удаляет из массива все элементы, в записи которых есть цифра 5
-* @param array - массив
-* @param size - размер массива
-*/
-void delete_5(int* array, size_t size);
 
+int amount_5(int* array, size_t size);
+bool is_5(int a);
+int* fill_array_5(int* array, size_t k, size_t size);
 /*
 * @brief предлагает выбор пользователю
 * @return введенный номер действия
@@ -163,20 +155,21 @@ int main() {
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
-	int min;
-	int middle;
+	int k = 0;
 	switch (action)
 	{
 	case (min_middle_change):
-		min = min_element(array, size);
-		middle = middle_element(array, size);
-		min_middle(array, size, min, middle);
-		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min, middle);
+		min_middle(array, size, min_element(array, size), middle_element(array, size));
+		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min_element(array, size), middle_element(array, size));
 		puts("\nМассив после:\t");
 		print_array(array, size);
 		break;
 	case (delete_element_with_5):
-		delete_5(array, size);
+		puts("\nМассив до:\t");
+		print_array(array, size);
+		k = amount_5(array, size);
+		puts("\nМассив после:\t");
+		print_array(fill_array_5(array, k, size), (size - k));
 		break;
 	case (new_array):
 
@@ -209,11 +202,11 @@ void bubble_sort(int* array, size_t size)
 {
 	for (size_t i = 0; i < size - 1; i++)
 	{
-		for (size_t j = i + 1; j < size - i - 1; j++)
+		for (size_t j = 0; j < size; j++)
 		{
 			if (array[j] > array[j + 1])
 			{
-				swap(&array[j], &array[j + 1]);
+				swap(&(array[j]), &(array[j + 1]));
 			}
 		}
 	}
@@ -224,11 +217,6 @@ void swap(int* a, int* b)
 	int temp = *a;
 	*a = *b;
 	*b = temp;
-}
-
-int compare(const void*i, const void*j)
-{
-	return *(int *)i - *(int *)j;
 }
 
 void min_middle(int* array, size_t size, int min_element, int middle_element)
@@ -255,23 +243,52 @@ int middle_element(int* array, size_t size)
 	return array[(size / 2)];
 }
 
-void delete_5(int* array, size_t size)
+int amount_5(int* array, size_t size)
 {
+	int k = 0;
 	for (int i = 0; i < size; i++)
 	{
-		char str [50];
-		sprintf_s(str, "%d", array[i]);
-		for (int j = 0; j < strlen(str); j++)
+		if (is_5(array[i]))
 		{
-			if (str[j] == "5")
-			{
-				for (int l = i; l < size; l++)
-				{
-					array[l] = array[l + 1];
-				}
-			}
+			k++;
 		}
 	}
+	return k;
+}
+
+bool is_5(int a)
+{
+	int b = abs(a);
+	while (b > 0)
+	{
+		if (b % 10 == 5)
+		{
+			return true;
+		}
+		b = b / 10;
+	}
+	return false;
+}
+
+int* fill_array_5(int* array, size_t k, size_t size)
+{
+	int* array_without_5 = get_array(size - k);
+	int i = 0;
+	int j = 0;
+	while (i < size)
+	{
+		if (is_5(array[i]))
+		{
+			i++;
+		}
+		else
+		{
+			array_without_5[j] = array[i];
+			i++;
+			j++;
+		}
+	}
+	return array_without_5;
 }
 
 int get_value(const char* massage)
