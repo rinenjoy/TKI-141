@@ -158,11 +158,9 @@ void print_array(int* array, size_t size);
 * @return 0, в случае успешного завершения программы
 */
 int main() {
-	int size_0 = get_value("Введите размер массива(нечетное число)\t");
-	const size_t size = get_size(size_0);
+	const size_t size = get_size(get_value("Введите размер массива(нечетное число)\t"));
 	int* array = get_array(size);
-	int choice_1 = get_choice_fill();
-	enum fill_in fill_in = (enum fill_in)choice_1;
+	enum fill_in fill_in = (enum fill_in)get_choice_fill();
 	switch (fill_in)
 	{
 	case (fill_randomm):
@@ -179,8 +177,7 @@ int main() {
 		return 1;
 	}
 	print_array(array, size);
-	int choice_2 = get_choice_action();
-	enum action action = (enum action)choice_2;
+	enum action action = (enum action)get_choice_action();
 	int min = 0;
 	int middle = 0;
 	int k = 0;
