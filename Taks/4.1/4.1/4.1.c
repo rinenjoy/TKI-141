@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <float.h>
 #include <errno.h>
 #include <time.h>
 #include <stdbool.h>
@@ -35,7 +34,7 @@ int get_sum_10(int* array, size_t size);
 * @param size - размер массива
 * @return изменённый массив
 */
-void exchange_array(int* array,size_t size);
+int* exchange_array(int* array,size_t size);
 
 /*
 * @brief меняет переменные
@@ -155,6 +154,7 @@ int main() {
 	print_array(array, size);
 	int choice_2 = get_choice_action();
 	enum action action = (enum action)choice_2;
+	int* B = NULL;
 	switch (action)
 	{
 		case (sum_10):
@@ -163,9 +163,10 @@ int main() {
 		case (exchange):
 			printf_s("\nМассив до:\t");
 			print_array(array, size);
+			B = exchange_array(array, size);
 			printf_s("\nМассив после:\t");
-			exchange_array(array, size);
-			print_array(array, size);
+			print_array(B, size);
+			free_array(B);
 			break;
 		case (para):
 			if (is_exist_para(array, size))
@@ -200,15 +201,21 @@ int get_sum_10(int* array, size_t size)
 	return sum;
 }
 
-void exchange_array(int* array, size_t size)
+int* exchange_array(int* array, size_t size)
 {
-	size_t k = get_size_t(get_value("Сколко элементов хотите поменять?\t"));
-	assert(k < size);
+	int* B = get_array(size);
+	for (int m = 0; m < size; m++)
+	{
+		B[m] = array[m];
+	}
+	size_t k = get_size_t(get_value("\nСколко элементов хотите поменять?\t"));
+	assert(k <= size);
 	size_t l = k / 2;
 	for (int i = 0; i < l; i++)
 	{
-		swap(&(array[i]), &(array[k - i - 1]));
+		swap(&(B[i]), &(B[k - i - 1]));
 	}
+	return B;
 }
 
 void swap(int* a, int* b)
@@ -294,7 +301,7 @@ int* get_array(const size_t size)
 
 int fill_random(const size_t size, int* array, int range_right, int range_left)
 {
-	unsigned int ttime = time(NULL);
+	unsigned int ttime = (unsigned int)time(NULL);
 	srand(ttime);
 	for (size_t i = 0; i < size; i++) {
 		array[i] = rand() % (range_right - range_left + 1) + range_left;
