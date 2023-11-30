@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <float.h>
 #include <errno.h>
 #include <time.h>
 #include <stdbool.h>
-#include <string.h>
 
 /*
 * @brief Выбор пользователя
@@ -76,13 +74,13 @@ int amount_5(int* array, size_t size);
 bool is_5(int a);
 
 /*
-* @brief заполняет массив элементами без цифры 5
+* @brief создает и заполняет массив элементами без цифры 5
 * @param array - массив
 * @param size - размер массива
 * @param k - кол-во элементов с цифрой 5 в числе
 * @return заполненный массив
 */
-int* fill_array_5(int* array, size_t k, size_t size);
+int* get_array_5(int* array, size_t k, size_t size);
 
 /*
 * @brief предлагает выбор пользователю
@@ -124,7 +122,7 @@ int* get_array(const size_t size);
 * @param size - размер массива
 * @return новый массив
 */
-int* fill_new_array(int* array, const size_t size);
+int* get_new_array(int* array, const size_t size);
 
 /*
 * @brief Заполняет массив рандомными числами
@@ -203,12 +201,12 @@ int main() {
 		print_array(array, size);
 		k = amount_5(array, size);
 		puts("\nМассив после:\t");
-		array_without_5 = fill_array_5(array, k, size);
+		array_without_5 = get_array_5(array, k, size);
 		print_array(array_without_5, (size - k));
 		free_array(array_without_5);
 		break;
 	case (new_array):
-		new_arr = fill_new_array(array, size);
+		new_arr = get_new_array(array, size);
 		print_array(new_arr, size);
 		free_array(new_arr);
 		break;
@@ -231,7 +229,7 @@ int get_choice_fill()
 
 int get_choice_action()
 {
-	printf_s("\n%d - Заменить минимальный элемент массива на средний\n%d - Удалить из массива все элементы, в записи которых есть цифра 5\n%d - Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci2, если нечетный, то Ai=2Ci.\n", min_middle_change, delete_element_with_5, new_array);
+	printf_s("\n%d - Заменить минимальный элемент массива на средний\n%d - Удалить из массива все элементы, в записи которых есть цифра 5\n%d - Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci^2, если нечетный, то Ai=2Ci.\n", min_middle_change, delete_element_with_5, new_array);
 	int choice = get_value("\nВыберите действие:\t");
 	return choice;
 }
@@ -271,14 +269,28 @@ void min_middle(int* array, size_t size, int min_element, int middle_element)
 
 int min_element(int* array, size_t size)
 {
-	bubble_sort(array, size);
-	return array[0];
+	int min = 100000;
+	for (size_t i = 0; i < size; i++)
+	{
+		if (array[i] < min)
+		{
+			min = array[i];
+		}
+	}
+	return min;
 }
 
 int middle_element(int* array, size_t size)
 {
-	bubble_sort(array, size);
-	return array[(size / 2)];
+	int* B = get_array(size);
+	for (int i = 0; i < size; i++)
+	{
+		B[i] = array[i];
+	}
+	bubble_sort(B, size);
+	int middle = B[(size / 2)];
+	free_array(B);
+	return middle;
 }
 
 int amount_5(int* array, size_t size)
@@ -308,7 +320,7 @@ bool is_5(int a)
 	return false;
 }
 
-int* fill_array_5(int* array, size_t k, size_t size)
+int* get_array_5(int* array, size_t k, size_t size)
 {
 	int* array_without_5 = get_array(size - k);
 	int i = 0;
@@ -366,7 +378,7 @@ int* get_array(const size_t size)
 	return array;
 }
 
-int* fill_new_array(int* array, const size_t size)
+int* get_new_array(int* array, const size_t size)
 {
 	int* new_array = get_array(size);
 	for (int i = 0; i < size; i++)
@@ -385,7 +397,7 @@ int* fill_new_array(int* array, const size_t size)
 
 int fill_random(const size_t size, int* array)
 {
-	time_t ttime = time(NULL);
+	unsigned int ttime = (unsigned int)time(NULL);
 	srand(ttime);
 	for (size_t i = 0; i < size; i++) {
 		array[i] = rand() % 2000 - 1000;
