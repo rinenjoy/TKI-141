@@ -148,7 +148,7 @@ int main() {
 		free_array(max_zero_array, line, column);
 		break;
 	case (put_str_0):
-
+		new_array_str_0(array, line, column);
 		break;
 	default:
 		errno = EIO;
