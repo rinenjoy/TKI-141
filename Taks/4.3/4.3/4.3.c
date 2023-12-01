@@ -125,7 +125,7 @@ int main() {
 	{
 	case (fill_randomm):
 		fill_random(array, line, column);
-		puts("\nМассив заполнен рандомными числами:");
+		puts("\nМассив заполнен рандомными числами:\n");
 		break;
 	case (fill_by_my_self):
 		fill_by_your_self(array, line, column);
@@ -143,7 +143,7 @@ int main() {
 	{
 	case (change_max_zero):
 		max_zero_array = max_zero(array, line, column);
-		puts("\nИзменённый массив:");
+		puts("\nИзменённый массив:\n");
 		print_array(max_zero_array, line, column);
 		free_array(max_zero_array, line, column);
 		break;
@@ -190,8 +190,9 @@ int** new_array_str_0(int** array, const size_t line, const size_t column)
 				print_array(new_array, line, column);
 			}
 		}
-		return new_array;
 	}
+	return new_array;
+}
 
 int** max_zero(int** array, const size_t line, const size_t column)
 {
@@ -308,7 +309,6 @@ void free_array(int** array, const size_t line, const size_t column)
 
 void print_array(int** array, const size_t line, const size_t column)
 {
-	puts("\n");
 	for (size_t i = 0; i < line; i++)
 	{
 		puts("\n");
