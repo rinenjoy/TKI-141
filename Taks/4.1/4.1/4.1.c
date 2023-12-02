@@ -228,7 +228,7 @@ void swap(int* a, int* b)
 bool is_exist_para(int* array, size_t size)
 {
 	int number = get_value("Введите число\t");
-	for (size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < size - 1; i++)
 	{
 		if (array[i] * array[i + 1] == number)
 		{
