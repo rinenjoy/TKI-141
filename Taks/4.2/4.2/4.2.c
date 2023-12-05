@@ -37,8 +37,6 @@ void swap(int* a, int* b);
 * @brief меняет минимальный элемент на средний
 * @param array - массив
 * @param size - размер массива
-* @param min_element - минимальный элемент массива
-* @param middle_element - средний элемент массива
 * @return изменённый массив
 */
 int* min_middle(int* array, size_t size);
