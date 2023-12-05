@@ -39,8 +39,9 @@ void swap(int* a, int* b);
 * @param size - размер массива
 * @param min_element - минимальный элемент массива
 * @param middle_element - средний элемент массива
+* @return изменённый массив
 */
-void min_middle(int* array, size_t size, int min_element, int middle_element);
+int* min_middle(int* array, size_t size);
 
 /*
 * @brief Ищет минимальный элемент массива
@@ -57,6 +58,14 @@ int min_element(int* array, size_t size);
 * @return средний элемент
 */
 int middle_element(int* array, size_t size);
+
+/*
+* @brief копирует массив
+* @param array - массив
+* @param size - размер массива
+* @return скопироанный массив
+*/
+int* copy_array(int* array, size_t size);
 
 /*
 * @brief считает сколько элементов с цифрой 5 в числе
@@ -178,34 +187,23 @@ int main() {
 	}
 	print_array(array, size);
 	enum action action = (enum action)get_choice_action();
-	int min = 0;
-	int middle = 0;
-	int k = 0;
-	int* array_without_5 = NULL;
-	int* new_arr = NULL;
 	switch (action)
 	{
 	case (min_middle_change):
-		min = min_element(array, size);
-		middle = middle_element(array, size);
-		min_middle(array, size, min, middle);
-		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min, middle);
+		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min_element(array, size), middle_element(array, size));
 		puts("\nМассив после:\t");
-		print_array(array, size);
+		print_array(min_middle(array, size), size);
 		break;
 	case (delete_element_with_5):
 		puts("\nМассив до:\t");
 		print_array(array, size);
-		k = amount_5(array, size);
 		puts("\nМассив после:\t");
-		array_without_5 = get_array_5(array, k, size);
-		print_array(array_without_5, (size - k));
-		free_array(array_without_5);
+		print_array(get_array_5(array, amount_5(array, size), size), (size - amount_5(array, size)));
+		free_array(get_array_5(array, amount_5(array, size), size));
 		break;
 	case (new_array):
-		new_arr = get_new_array(array, size);
-		print_array(new_arr, size);
-		free_array(new_arr);
+		print_array(get_new_array(array, size), size);
+		free_array(get_new_array(array, size));
 		break;
 	default:
 		errno = EIO;
@@ -252,22 +250,24 @@ void swap(int* a, int* b)
 	*b = temp;
 }
 
-void min_middle(int* array, size_t size, int min_element, int middle_element)
+int* min_middle(int* array, size_t size)
 {
+	int* B = copy_array(array, size);
 	for (int j = 0; j < size; j++)
 	{
-		if (array[j] == min_element)
+		if (B[j] == min_element(B, size))
 		{
-			array[j] = middle_element;
+			B[j] = middle_element(B, size);
 			break;
 		}
 	}
+	return B;
 }
 
 int min_element(int* array, size_t size)
 {
-	int min = 100000;
-	for (size_t i = 0; i < size; i++)
+	int min = array[0];
+	for (size_t i = 1; i < size; i++)
 	{
 		if (array[i] < min)
 		{
@@ -279,15 +279,21 @@ int min_element(int* array, size_t size)
 
 int middle_element(int* array, size_t size)
 {
-	int* B = get_array(size);
-	for (int i = 0; i < size; i++)
-	{
-		B[i] = array[i];
-	}
+	int* B = copy_array(array, size);
 	bubble_sort(B, size);
 	int middle = B[(size / 2)];
 	free_array(B);
 	return middle;
+}
+
+int* copy_array(int* array, size_t size)
+{
+	int* B = get_array(size);
+	for (int i = 0; i < size; i++) 
+	{
+		B[i] = array[i];
+	}
+	return B;
 }
 
 int amount_5(int* array, size_t size)
