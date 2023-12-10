@@ -42,6 +42,13 @@ void swap(int* a, int* b);
 int* min_middle(int* array, size_t size);
 
 /*
+* @brief проверяет число на чётность
+* @param value - введенная переменная
+* @return true/false
+*/
+bool check_parity(size_t value);
+
+/*
 * @brief Ищет минимальный элемент массива
 * @param array - массив
 * @param size - размер массива
@@ -165,7 +172,7 @@ void print_array(int* array, size_t size);
 * @return 0, в случае успешного завершения программы
 */
 int main() {
-	const size_t size = get_size(get_value("Введите размер массива(нечетное число)\t"));
+	const size_t size = get_size(get_value("Введите размер массива\t"));
 	int* array = get_array(size);
 	enum fill_in fill_in = (enum fill_in)get_choice_fill();
 	switch (fill_in)
@@ -197,11 +204,9 @@ int main() {
 		print_array(array, size);
 		puts("\nМассив после:\t");
 		print_array(get_array_5(array, amount_5(array, size), size), (size - amount_5(array, size)));
-		free_array(get_array_5(array, amount_5(array, size), size));
 		break;
 	case (new_array):
 		print_array(get_new_array(array, size), size);
-		free_array(get_new_array(array, size));
 		break;
 	default:
 		errno = EIO;
@@ -222,7 +227,7 @@ int get_choice_fill()
 
 int get_choice_action()
 {
-	printf_s("\n%d - Заменить минимальный элемент массива на средний\n%d - Удалить из массива все элементы, в записи которых есть цифра 5\n%d - Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci^2, если нечетный, то Ai=2Ci.\n", min_middle_change, delete_element_with_5, new_array);
+	printf_s("\n%d - Заменить минимальный элемент массива на средний(для выполнения этого задания размер массива должен быть нечетным числом)\n%d - Удалить из массива все элементы, в записи которых есть цифра 5\n%d - Из элементов массива C сформировать массив A той же размерности по правилу: если номер i элемента четный, то Ai=Ci^2, если нечетный, то Ai=2Ci.\n", min_middle_change, delete_element_with_5, new_array);
 	int choice = get_value("\nВыберите действие:\t");
 	return choice;
 }
@@ -250,6 +255,12 @@ void swap(int* a, int* b)
 
 int* min_middle(int* array, size_t size)
 {
+	if (check_parity(size))
+	{
+		errno = EIO;
+		perror("Неверный размер(должен быть нечетным числом)");
+		abort();
+	}
 	int* B = copy_array(array, size);
 	for (int j = 0; j < size; j++)
 	{
@@ -260,6 +271,16 @@ int* min_middle(int* array, size_t size)
 		}
 	}
 	return B;
+}
+
+bool check_parity(size_t value)
+{
+	size_t a = value;
+	if (a % 2 == 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 int min_element(int* array, size_t size)
@@ -358,7 +379,7 @@ int get_value(const char* massage)
 
 size_t get_size(int value)
 {
-	if (value <= 0 || value % 2 == 0)
+	if (value <= 0)
 	{
 		errno = ENOMEM;
 		perror("wrong size");
@@ -400,8 +421,10 @@ int fill_random(const size_t size, int* array)
 {
 	unsigned int ttime = (unsigned int)time(NULL);
 	srand(ttime);
+	int A = get_value("Введите левую границу диапозона");
+	int B = get_value("Введите правую границу диапозона");
 	for (size_t i = 0; i < size; i++) {
-		array[i] = rand() % 2000 - 1000;
+		array[i] = rand() % (B - A + 1) + A;
 	}
 	return 0;
 }
