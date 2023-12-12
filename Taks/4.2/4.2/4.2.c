@@ -259,7 +259,7 @@ int* min_middle(int* array, size_t size)
 	if (check_parity(size))
 	{
 		int* B = copy_array(array, size);
-		for (int j = 0; j < size; j++)
+		for (size_t j = 0; j < size; j++)
 		{
 			if (B[j] == min_element(B, size))
 			{
@@ -308,7 +308,7 @@ int middle_element(int* array, size_t size)
 int* copy_array(int* array, size_t size)
 {
 	int* B = get_array(size);
-	for (int i = 0; i < size; i++) 
+	for (size_t i = 0; i < size; i++)
 	{
 		B[i] = array[i];
 	}
@@ -318,7 +318,7 @@ int* copy_array(int* array, size_t size)
 int amount_5(int* array, size_t size)
 {
 	int k = 0;
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
 		if (is_5(array[i]))
 		{
@@ -345,8 +345,8 @@ bool is_5(int a)
 int* get_array_5(int* array, size_t k, size_t size)
 {
 	int* array_without_5 = get_array(size - k);
-	int i = 0;
-	int j = 0;
+	size_t i = 0;
+	size_t j = 0;
 	while (i < size)
 	{
 		if (is_5(array[i]))
@@ -403,7 +403,7 @@ int* get_array(const size_t size)
 int* get_new_array(int* array, const size_t size)
 {
 	int* new_array = get_array(size);
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
 		if (i % 2 == 0)
 		{
