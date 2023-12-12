@@ -202,10 +202,10 @@ int get_choice_action()
 
 int** new_array_str_0(int** array, const size_t line, const size_t column)
 {
-	int k = line_amount_3(array, line);
+	size_t k = line_amount_3(array, line);
 	int** new_array = get_array(line + k, column);
-	int i = 0;
-	int j = 0;
+	size_t i = 0;
+	size_t j = 0;
 	while (i < line && j < line + k)
 	{
 		if (array[i][0] % 3 == 0)
@@ -227,7 +227,7 @@ int** new_array_str_0(int** array, const size_t line, const size_t column)
 
 int line_amount_3(const int** const array, const size_t line)
 {
-	int k = 0;
+	size_t k = 0;
 	for (size_t i = 0; i < line; i++)
 	{
 		if (array[i][0] % 3 == 0)
@@ -297,7 +297,7 @@ size_t get_size(int value)
 int** get_array(const size_t line, const size_t column)
 {
 	int** array = (int**)malloc(line * sizeof(int*));
-	for (int i = 0; i < line; i++)
+	for (size_t i = 0; i < line; i++)
 	{
 		array[i] = (int*)malloc(column * sizeof(int));
 	}
@@ -307,7 +307,7 @@ int** get_array(const size_t line, const size_t column)
 int* get_line_0(const size_t column)
 {
 	int* line = (int*)malloc(column * sizeof(int));
-	for (int i = 0; i < column; i++)
+	for (size_t i = 0; i < column; i++)
 	{
 		line[i] = 0;
 	}
