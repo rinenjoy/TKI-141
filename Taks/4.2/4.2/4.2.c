@@ -46,7 +46,7 @@ int* min_middle(int* array, size_t size);
 * @param value - введенная переменная
 * @return true/false
 */
-bool check_parity(size_t value);
+bool check_parity(size_t size);
 
 /*
 * @brief Ищет минимальный элемент массива
@@ -234,13 +234,14 @@ int get_choice_action()
 
 void bubble_sort(int* array, size_t size)
 {
+	int* B = copy_array(array, size);
 	for (size_t i = 0; i < size - 1; i++)
 	{
 		for (size_t j = 0; j < size - i - 1; j++)
 		{
-			if (array[j] > array[j + 1])
+			if (B[j] > B[j + 1])
 			{
-				swap(&(array[j]), &(array[j + 1]));
+				swap(&(B[j]), &(B[j + 1]));
 			}
 		}
 	}
@@ -257,30 +258,29 @@ int* min_middle(int* array, size_t size)
 {
 	if (check_parity(size))
 	{
+		int* B = copy_array(array, size);
+		for (int j = 0; j < size; j++)
+		{
+			if (B[j] == min_element(B, size))
+			{
+				B[j] = middle_element(B, size);
+				break;
+			}
+		}
+		return B;
+	}
+}
+
+bool check_parity(size_t size)
+{
+	size_t a = size;
+	if (a % 2 == 0)
+	{
 		errno = EIO;
 		perror("Неверный размер(должен быть нечетным числом)");
 		abort();
 	}
-	int* B = copy_array(array, size);
-	for (int j = 0; j < size; j++)
-	{
-		if (B[j] == min_element(B, size))
-		{
-			B[j] = middle_element(B, size);
-			break;
-		}
-	}
-	return B;
-}
-
-bool check_parity(size_t value)
-{
-	size_t a = value;
-	if (a % 2 == 0)
-	{
-		return true;
-	}
-	return false;
+	return true;
 }
 
 int min_element(int* array, size_t size)
