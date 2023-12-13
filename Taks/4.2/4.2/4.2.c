@@ -108,7 +108,6 @@ int get_choice_fill();
 */
 int get_choice_action();
 
-
 /*
 * @brief проверяет введенное значение
 * @param massage - сообщение для пользователя
@@ -145,6 +144,13 @@ int* get_new_array(int* array, const size_t size);
 * @return 0 - в случае успеха
 */
 int fill_random(const size_t size, int* array);
+
+/*
+* @brief Проверяет правильность введеного диапазона
+* @param left - леая граница диапазона
+* @param right - правая граница диапазона
+*/
+void check_range(int left, int right);
 
 /*
 * @brief Пользователь заполняет массив
@@ -269,6 +275,12 @@ int* min_middle(int* array, size_t size)
 		}
 		return B;
 	}
+	else
+	{
+		errno = EIO;
+		perror("ERROR");
+		abort();
+	}
 }
 
 bool check_parity(size_t size)
@@ -277,7 +289,7 @@ bool check_parity(size_t size)
 	if (a % 2 == 0)
 	{
 		errno = EIO;
-		perror("Неверный размер(должен быть нечетным числом)");
+		perror("\nНеверный размер(должен быть нечетным числом)");
 		abort();
 	}
 	return true;
@@ -382,7 +394,7 @@ size_t get_size(int value)
 	if (value <= 0)
 	{
 		errno = ENOMEM;
-		perror("wrong size");
+		perror("Wrong size");
 		abort();
 	}
 	return (size_t)value;
@@ -421,12 +433,23 @@ int fill_random(const size_t size, int* array)
 {
 	unsigned int ttime = (unsigned int)time(NULL);
 	srand(ttime);
-	int A = get_value("Введите левую границу диапозона");
-	int B = get_value("Введите правую границу диапозона");
+	int A = get_value("\nВведите левую границу диапозона\t");
+	int B = get_value("\nВведите правую границу диапозона\t");
+	check_range(A, B);
 	for (size_t i = 0; i < size; i++) {
 		array[i] = rand() % (B - A + 1) + A;
 	}
 	return 0;
+}
+
+void check_range(int left, int right)
+{
+	if (left > right)
+	{
+		errno = EIO;
+		perror("\nWrong number");
+		abort();
+	}
 }
 
 int fill_by_your_self(const size_t size, int* array)
