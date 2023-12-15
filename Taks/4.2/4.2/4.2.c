@@ -42,13 +42,6 @@ void swap(int* a, int* b);
 int* min_middle(int* array, size_t size);
 
 /*
-* @brief проверяет число на чётность
-* @param value - введенная переменная
-* @return true/false
-*/
-bool check_parity(size_t size);
-
-/*
 * @brief Ищет минимальный элемент массива
 * @param array - массив
 * @param size - размер массива
@@ -85,7 +78,7 @@ int amount_5(int* array, size_t size);
 * @param а - элемент массива(число)
 * @return true, если цифра пять есть в числе
 */
-bool is_5(int a);
+bool has_five(int a);
 
 /*
 * @brief создает и заполняет массив элементами без цифры 5
@@ -156,9 +149,8 @@ void check_range(int left, int right);
 * @brief Пользователь заполняет массив
 * @param size - размер массива
 * @param array -массив
-* @return 0 - в случае успеха
 */
-int fill_by_your_self(const size_t size, int* array);
+void fill_by_your_self(const size_t size, int* array);
 
 /*
 * @brief чистит использованную память
@@ -198,6 +190,7 @@ int main() {
 	}
 	print_array(array, size);
 	enum action action = (enum action)get_choice_action();
+	int* new = NULL;
 	switch (action)
 	{
 	case (min_middle_change):
@@ -212,7 +205,9 @@ int main() {
 		print_array(get_array_5(array, amount_5(array, size), size), (size - amount_5(array, size)));
 		break;
 	case (new_array):
-		print_array(get_new_array(array, size), size);
+		new = get_new_array(array, size);
+		print_array(new, size);
+		free_array(new);
 		break;
 	default:
 		errno = EIO;
@@ -240,14 +235,13 @@ int get_choice_action()
 
 void bubble_sort(int* array, size_t size)
 {
-	int* B = copy_array(array, size);
 	for (size_t i = 0; i < size - 1; i++)
 	{
 		for (size_t j = 0; j < size - i - 1; j++)
 		{
-			if (B[j] > B[j + 1])
+			if (array[j] > array[j + 1])
 			{
-				swap(&(B[j]), &(B[j + 1]));
+				swap(&(array[j]), &(array[j + 1]));
 			}
 		}
 	}
@@ -262,7 +256,7 @@ void swap(int* a, int* b)
 
 int* min_middle(int* array, size_t size)
 {
-	if (check_parity(size))
+	if (size % 2 == 1)
 	{
 		int* B = copy_array(array, size);
 		for (size_t j = 0; j < size; j++)
@@ -278,21 +272,9 @@ int* min_middle(int* array, size_t size)
 	else
 	{
 		errno = EIO;
-		perror("ERROR");
-		abort();
-	}
-}
-
-bool check_parity(size_t size)
-{
-	size_t a = size;
-	if (a % 2 == 0)
-	{
-		errno = EIO;
 		perror("\nНеверный размер(должен быть нечетным числом)");
 		abort();
 	}
-	return true;
 }
 
 int min_element(int* array, size_t size)
@@ -332,7 +314,7 @@ int amount_5(int* array, size_t size)
 	int k = 0;
 	for (size_t i = 0; i < size; i++)
 	{
-		if (is_5(array[i]))
+		if (has_five(array[i]))
 		{
 			k++;
 		}
@@ -340,7 +322,7 @@ int amount_5(int* array, size_t size)
 	return k;
 }
 
-bool is_5(int a)
+bool has_five(int a)
 {
 	int b = abs(a);
 	while (b > 0)
@@ -361,7 +343,7 @@ int* get_array_5(int* array, size_t k, size_t size)
 	size_t j = 0;
 	while (i < size)
 	{
-		if (is_5(array[i]))
+		if (has_five(array[i]))
 		{
 			i++;
 		}
@@ -452,13 +434,12 @@ void check_range(int left, int right)
 	}
 }
 
-int fill_by_your_self(const size_t size, int* array)
+void fill_by_your_self(const size_t size, int* array)
 {
 	for (size_t i = 0; i < size; i++)
 	{
 		array[i] = get_value("Введите элемент массива\t");
 	}
-	return 0;
 }
 
 void free_array(int* array)
