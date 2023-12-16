@@ -106,18 +106,16 @@ int** copy_array(const int** const array, const size_t line, const size_t column
 * @param array - массив
 * @param line - кол-во строк
 * @param column - кол-во столбцов
-* @return 0 - в случае успеха
 */
-int fill_random(int** array, const size_t line, const size_t column);
+void fill_random(int** array, const size_t line, const size_t column);
 
 /*
 * @brief Пользователь заполняет массив
 * @param array - массив
 * @param line - кол-во строк
 * @param column - кол-во столбцов
-* @return 0 - в случае успеха
 */
-int fill_by_your_self(int** array, const size_t line, const size_t column);
+void fill_by_your_self(int** array, const size_t line, const size_t column);
 
 /*
 * @brief Чистит использованную память
@@ -167,8 +165,9 @@ int main() {
 	{
 	case (change_max_zero):
 		puts("\nИзменённый массив:\n");
-		print_array(max_zero(array, line, column), line, column);
-		free_array(max_zero(array, line, column), line);
+		new_array = max_zero(array, line, column);
+		print_array(new_array, line, column);
+		free_array(new_array, line);
 		break;
 	case (put_str_0):
 		puts("\nИзменённый массив:\n");
@@ -189,15 +188,13 @@ int main() {
 int get_choice_fill()
 {
 	printf_s("\n\n%d - Заполнить массив рандомными числами\n%d - заполнить массив самостоятельно\n", fill_randomm, fill_by_my_self);
-	int choice = get_value("\nВыберите действие:\t");
-	return choice;
+	return get_value("\nВыберите действие:\t");
 }
 
 int get_choice_action()
 {
 	printf_s("\n%d - Заменить максимальный элемент каждой строки нулем\n%d - Вставить перед всеми строками, первый элемент которых делится на 3, строку из нулей\n", change_max_zero, put_str_0);
-	int choice = get_value("\nВыберите действие:\t");
-	return choice;
+	return get_value("\nВыберите действие:\t");
 }
 
 int** new_array_str_0(int** array, const size_t line, const size_t column)
@@ -327,7 +324,7 @@ int** copy_array(const int** const array, const size_t line, const size_t column
 	return cop_array;
 }
 
-int fill_random(int** array, const size_t line, const size_t column)
+void fill_random(int** array, const size_t line, const size_t column)
 {
 	unsigned int ttime = (unsigned int)time(NULL);
 	srand(ttime);
@@ -337,10 +334,9 @@ int fill_random(int** array, const size_t line, const size_t column)
 			array[i][j] = rand() % 201 - 100;
 		}
 	}
-	return 0;
 }
 
-int fill_by_your_self(int** array, const size_t line, const size_t column)
+void fill_by_your_self(int** array, const size_t line, const size_t column)
 {
 	for (size_t i = 0; i < line; i++)
 	{
@@ -349,7 +345,6 @@ int fill_by_your_self(int** array, const size_t line, const size_t column)
 			array[i][j] = get_value("Введите элемент массива\t");
 		}
 	}
-	return 0;
 }
 
 void free_array(int** array, size_t line)
