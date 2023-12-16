@@ -196,13 +196,17 @@ int main() {
 	case (min_middle_change):
 		printf_s("\n\n%d - Минимальный элемент\n%d - Средний элемент\n", min_element(array, size), middle_element(array, size));
 		puts("\nМассив после:\t");
-		print_array(min_middle(array, size), size);
+		new = min_middle(array, size);
+		print_array(new, size);
+		free_array(new);
 		break;
 	case (delete_element_with_5):
 		puts("\nМассив до:\t");
 		print_array(array, size);
 		puts("\nМассив после:\t");
-		print_array(get_array_5(array, amount_5(array, size), size), (size - amount_5(array, size)));
+		new = get_array_5(array, amount_5(array, size), size);
+		print_array(new, (size - amount_5(array, size)));
+		free_array(new);
 		break;
 	case (new_array):
 		new = get_new_array(array, size);
