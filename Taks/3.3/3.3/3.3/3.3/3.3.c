@@ -48,7 +48,6 @@ int main() {
 	printf_s("Argument\tFunction\tSumma\n");
 	for (double i = a; i - b <= DBL_EPSILON; i += step)
 	{
-		//double arg = i;
 		double sum = get_sum(i, function(i), e);
 		printf_s("%.2lf\t\t%lf\t\t%lf\n", i, function(i), sum);
 	}
@@ -72,12 +71,13 @@ double get_sum(double x, double func, double const e)
 {
 	double current = 1.0;
 	double sum = current;
-	int n = 1;
-	while (current - e > -DBL_EPSILON )
+	double n = 1;
+	while (current - e > - DBL_EPSILON )
 	{
-		current *= ((2*n  + 3))/ ((n + 1) * (2 * n + 1));
+		current *= (pow(x,2)*(2*n  + 3))/ ((n + 1) * (2 * n + 1));
 		sum += current;
-		n++;
+		n = n + 1.0;
+		//printf_s("\n%d\n%lf\n", n, current);
 	}
 	return sum;
 }
