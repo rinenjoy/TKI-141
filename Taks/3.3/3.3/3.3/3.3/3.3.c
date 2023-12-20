@@ -74,7 +74,7 @@ double get_sum(double x, double func, double const e)
 	double n = 1;
 	while (current - e > - DBL_EPSILON )
 	{
-		current *= (pow(x,2)*(2*n  + 3))/ ((n + 1) * (2 * n + 1));
+		current *= (double)((pow(x,2)*(2*n  + 3))/ ((n + 1) * (2 * n + 1)));
 		sum += current;
 		n = n + 1.0;
 		//printf_s("\n%d\n%lf\n", n, current);
