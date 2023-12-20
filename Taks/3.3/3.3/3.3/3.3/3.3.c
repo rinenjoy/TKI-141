@@ -49,7 +49,7 @@ int main() {
 	for (double i = a; i - b <= DBL_EPSILON; i += step)
 	{
 		double sum = get_sum(i, function(i), e);
-		printf_s("%.2lf\t\t%lf\t\t%lf\n", i, function(i), sum);
+		printf_s("%.2lf\t\t%lf\t%lf\n", i, function(i), sum);
 	}
 	return 0;
 }
